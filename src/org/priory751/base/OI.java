@@ -1,9 +1,8 @@
 
 package org.priory751.base;
 
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
+import org.priory751.commands.Autonomous;
+import org.priory751.utils.Attack3;
 
 /**
  * This class is the glue that binds the controls on the physical operator
@@ -11,8 +10,14 @@ import edu.wpi.first.wpilibj.buttons.DigitalIOButton;
  */
 public class OI {
     
-    public Joystick leftJoystick = new Joystick(1);
-    public Joystick rightJoystick = new Joystick(2);
+    public Attack3 leftJoystick = new Attack3(1);
+    public Attack3 rightJoystick = new Attack3(2);
+    public Autonomous autonomous = new Autonomous();
+    
+    public OI() {
+        leftJoystick.trigger.toggleWhenPressed(autonomous);
+        
+    }
     
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a joystick.
