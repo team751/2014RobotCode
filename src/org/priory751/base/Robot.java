@@ -14,7 +14,6 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.priory751.commands.Autonomous;
 import org.priory751.commands.CommandBase;
-import org.priory751.commands.TankDrive;
 
 /**
  * The VM is configured to automatically run this class, and to call the

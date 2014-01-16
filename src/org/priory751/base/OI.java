@@ -12,10 +12,8 @@ public class OI {
     
     public Attack3 leftJoystick = new Attack3(1);
     public Attack3 rightJoystick = new Attack3(2);
-    public Autonomous autonomous = new Autonomous();
     
     public OI() {
-        leftJoystick.trigger.toggleWhenPressed(autonomous);
         
     }
     
