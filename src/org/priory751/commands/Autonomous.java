@@ -25,14 +25,8 @@ public class Autonomous extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double timeDelay = 2;
-        int steps = 4;
-        for (int i = 0; i < steps; i++) {
-            CommandBase.driveTrain.setSpeed((1.0/steps)*i);
-            Timer.delay(timeDelay);
-        }
-        CommandBase.driveTrain.stop();
-        Timer.delay(timeDelay);
+        // Drive forward 5 feet
+        CommandBase.driveTrain.drive(60);
     }
 
     // Make this return true when this Command no longer needs to run execute()

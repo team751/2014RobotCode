@@ -1,5 +1,6 @@
 package org.priory751.base;
 
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import org.priory751.subsystems.Drivetrain;
 
@@ -22,9 +23,17 @@ public class RobotMap {
     
     // Connections
     public static final int leftDrivePWM = 1;
-    public static final int rightDrivePWM = 2;    
+    public static final int rightDrivePWM = 2;
+    public static final int leftDriveEncoderChannelA = 1;
+    public static final int leftDriveEncoderChannelB = 2;
+    public static final int rightDriveEncoderChannelA = 3;
+    public static final int rightDriveEncoderChannelB = 4;
     
     // Speed Controllers
     public static final Jaguar leftDrivetrainJaguar = new Jaguar(RobotMap.leftDrivePWM);
     public static final Jaguar rightDrivetrainJaguar = new Jaguar(RobotMap.rightDrivePWM);
+    
+    // Encoders
+    public static final Encoder leftDriveEncoder = new Encoder(RobotMap.leftDriveEncoderChannelA, RobotMap.leftDriveEncoderChannelB);
+    public static final Encoder rightDriveEncoder = new Encoder(RobotMap.rightDriveEncoderChannelA, RobotMap.rightDriveEncoderChannelB);
 }

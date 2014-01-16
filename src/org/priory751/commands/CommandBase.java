@@ -3,6 +3,7 @@ package org.priory751.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.priory751.base.OI;
+import org.priory751.base.RobotMap;
 import org.priory751.subsystems.Drivetrain;
 
 /**
@@ -24,6 +25,11 @@ public abstract class CommandBase extends Command {
         // yet. Thus, their requires() statements may grab null pointers. Bad
         // news. Don't move it.
         oi = new OI();
+        
+        RobotMap.leftDriveEncoder.start();
+        RobotMap.rightDriveEncoder.start();
+        RobotMap.leftDriveEncoder.setDistancePerPulse(.000623);
+        RobotMap.rightDriveEncoder.setDistancePerPulse(.000623);
 
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(driveTrain);
