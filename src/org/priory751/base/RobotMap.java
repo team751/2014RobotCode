@@ -28,6 +28,7 @@ public class RobotMap {
     public static final int leftDriveEncoderChannelB = 2;
     public static final int rightDriveEncoderChannelA = 3;
     public static final int rightDriveEncoderChannelB = 4;
+    public static final int gyroChannel = 1;
     
     // Speed Controllers
     public static final Jaguar leftDrivetrainJaguar = new Jaguar(RobotMap.leftDrivePWM);

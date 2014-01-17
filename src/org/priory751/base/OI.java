@@ -2,6 +2,7 @@
 package org.priory751.base;
 
 import org.priory751.commands.Autonomous;
+import org.priory751.commands.DriveStraight;
 import org.priory751.utils.Attack3;
 
 /**
@@ -14,7 +15,8 @@ public class OI {
     public Attack3 rightJoystick = new Attack3(2);
     
     public OI() {
-        
+        // Drive forwards
+        leftJoystick.baseRearLeft.whenPressed(new DriveStraight(5*0.3048));
     }
     
     //// CREATING BUTTONS

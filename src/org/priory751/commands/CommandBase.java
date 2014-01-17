@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.priory751.base.OI;
 import org.priory751.base.RobotMap;
 import org.priory751.subsystems.Drivetrain;
+import org.priory751.utils.Navigator;
 
 /**
  * The base for all commands. All atomic commands should subclass CommandBase.
@@ -17,6 +18,8 @@ public abstract class CommandBase extends Command {
     public static OI oi;
     // Create a single static instance of all of your subsystems
     public static Drivetrain driveTrain = new Drivetrain();
+    //Periodic tasks here (these are not subsystems)
+    public static Navigator navigator = new Navigator();
 
     public static void init() {
         // This MUST be here. If the OI creates Commands (which it very likely

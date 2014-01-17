@@ -8,10 +8,13 @@ package org.priory751.subsystems;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.priory751.base.RobotMap;
-import org.priory751.commands.TankDrive;
-import org.priory751.subsystems.drivetrain.EncoderDrive;
+import org.priory751.commands.DriveStraight;
+import org.priory751.commands.CheesyJoystickDrive;
+import org.priory751.utils.PolyMotorRobotDrive;
+import org.team751.cheesy.CheesyDrive;
 
 /**
  *
@@ -26,12 +29,24 @@ public class Drivetrain extends Subsystem {
     public final Encoder rightDriveEncoder = RobotMap.rightDriveEncoder;
     
     public boolean shouldStop = false;
+
+    private final PolyMotorRobotDrive drive;
+    private final long lastRunTime = System.currentTimeMillis();
+    
+    /**
+     * Keeps track of Cheesy Drive data
+     */
+    private final CheesyDrive cheeseDrive = new CheesyDrive();
+    
+    public Drivetrain() {
+        drive = new PolyMotorRobotDrive(new SpeedController[]{leftDriveJaguar}, new SpeedController[]{rightDriveJaguar});
+    }
     
     /**
      *
      */
     public void initDefaultCommand() {
-        setDefaultCommand(new TankDrive());
+        setDefaultCommand(new CheesyJoystickDrive());
     }
     
     /**
@@ -55,13 +70,35 @@ public class Drivetrain extends Subsystem {
     }
     
     /**
+     * Drive the robot, arcade drive style
+     * @param moveValue Forward/back motion. +1 is full forwards, -1 is full reverse
+     * @param rotateValue Rotation. -1 is left, +1 is right
+     */
+    public void arcadeDrive(double moveValue, double rotateValue) {
+        drive.arcadeDrive(moveValue, rotateValue);
+    }
+    
+    /**
+    * Drive the robot with the Cheesy Drive algorithm
+    * @param throttle Forward/back motion. +1 is full forwards, -1 is full reverse
+    * @param wheel Rotation. -1 is left, +1 is right
+    * @param quickTurn If quick turn mode should be used
+    */
+    public void cheesyDrive(double throttle, double wheel, boolean quickTurn) {
+        CheesyDrive.MotorOutputs outputs = cheeseDrive.cheesyDrive(throttle, wheel, quickTurn);
+        //Invert the right motor output so that it will work
+        drive.setLeftRightMotorOutputs(outputs.left, -outputs.right);
+    }
+        
+        
+    /**
      * Drives the robot forward a set number of inches
      * @param inches
      */
     
     public void drive(double inches) {
-        EncoderDrive ed = new EncoderDrive(this, inches);
-        new Thread(ed).start();
+        DriveStraight command = new DriveStraight(inches*0.0254);
+        command.start();
     }
     
     /**
