@@ -21,11 +21,32 @@ public class DriveStraight extends CommandBase {
     private volatile double rotateValue = 0;
     private final PIDController moveController;
     private final PIDController rotateController;
+    
     /**
      * The distance, in meters, that the robot should move in the course of this
      * command
      */
     private double distance = 0;
+    //These PIDSources are used to receive information on what driving
+    //should be done.
+    private final PIDOutput moveOutput = new PIDOutput() {
+        public void pidWrite(double output) {
+            synchronized (DriveStraight.this) {
+                moveValue = output;
+            }
+
+            System.out.println("Got move output " + output);
+        }
+    };
+    private final PIDOutput rotateOutput = new PIDOutput() {
+        public void pidWrite(double output) {
+            synchronized (DriveStraight.this) {
+                rotateValue = output;
+            }
+
+            System.out.println("Got rotate output " + output);
+        }
+    };
 
     /**
      * Constructor
@@ -72,7 +93,7 @@ public class DriveStraight extends CommandBase {
     protected synchronized void execute() {
         driveTrain.arcadeDrive(moveValue, rotateValue);
 		
-		System.out.println("Position "+navigator.getEncoderDistance()+" target "+moveController.getSetpoint());
+	System.out.println("Position "+navigator.getEncoderDistance()+" target "+moveController.getSetpoint());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -83,7 +104,7 @@ public class DriveStraight extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-		System.out.println("DriveStraight done");
+	System.out.println("DriveStraight done");
         //Disable and free the controllers
         moveController.disable();
         rotateController.disable();
@@ -99,24 +120,4 @@ public class DriveStraight extends CommandBase {
     protected void interrupted() {
         end();
     }
-    //These PIDSources are used to receive information on what driving
-    //should be done.
-    private final PIDOutput moveOutput = new PIDOutput() {
-        public void pidWrite(double output) {
-            synchronized (DriveStraight.this) {
-                moveValue = output;
-            }
-
-            System.out.println("Got move output " + output);
-        }
-    };
-    private final PIDOutput rotateOutput = new PIDOutput() {
-        public void pidWrite(double output) {
-            synchronized (DriveStraight.this) {
-                rotateValue = output;
-            }
-
-            System.out.println("Got rotate output " + output);
-        }
-    };
 }
