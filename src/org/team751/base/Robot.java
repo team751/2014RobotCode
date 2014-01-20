@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.team751.commands.Autonomous;
 import org.team751.commands.CommandBase;
+import org.team751.utils.Diagnostic;
 import org.team751.vision.utils.TargetReport;
 
 /**
@@ -32,6 +33,9 @@ public class Robot extends IterativeRobot {
      * used for any initialization code.
      */
     public void robotInit() {
+        // Run diagnostics
+        Diagnostic.runAllDiagnosticTests();
+        
         // instantiate the command used for the autonomous period
         autonomousCommand = new Autonomous();
         lastTarget = new TargetReport();
