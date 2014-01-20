@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import org.team751.commands.Autonomous;
 import org.team751.commands.CommandBase;
+import org.team751.vision.utils.TargetReport;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,6 +25,7 @@ import org.team751.commands.CommandBase;
  */
 public class Robot extends IterativeRobot {
     Command autonomousCommand;
+    public static TargetReport lastTarget;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -32,6 +34,7 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         // instantiate the command used for the autonomous period
         autonomousCommand = new Autonomous();
+        lastTarget = new TargetReport();
 
         // Initialize all subsystems
         CommandBase.init();
