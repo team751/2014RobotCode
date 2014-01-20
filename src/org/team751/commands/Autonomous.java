@@ -18,6 +18,8 @@ import org.team751.vision.VisionNetworkTableCommunication;
 public class Autonomous extends CommandBase {
     Timer autonomousTimer;
     
+    VisionNetworkTableCommunication vntc = new VisionNetworkTableCommunication();
+    
     double desiredDistance;
     double desiredDistanceEpsilon;
     double slowDownDistance;
@@ -39,16 +41,17 @@ public class Autonomous extends CommandBase {
         requires(CommandBase.driveTrain);
         
         autonomousTimer = new Timer();
-        VisionNetworkTableCommunication.setDesiredDistance(95);
-        VisionNetworkTableCommunication.setDesiredDistanceEpsilon(6);
-        VisionNetworkTableCommunication.setSlowDownDistance(30);
-        VisionNetworkTableCommunication.setMaxAngle(5);
-        VisionNetworkTableCommunication.setMaxForwardSpeed(.4);
-        VisionNetworkTableCommunication.setMinForwardSpeed(.1);
-        VisionNetworkTableCommunication.setMaxAngleSpeed(.2);
-        VisionNetworkTableCommunication.setLiveMode(true);
-        VisionNetworkTableCommunication.setShootMode(true);
-        VisionNetworkTableCommunication.setStrafeMode(false);
+        
+        vntc.setDesiredDistance(95); // Inches
+        vntc.setDesiredDistanceEpsilon(6);
+        vntc.setSlowDownDistance(30);
+        vntc.setMaxAngle(5);
+        vntc.setMaxForwardSpeed(.4);
+        vntc.setMinForwardSpeed(.1);
+        vntc.setMaxAngleSpeed(.2);
+        vntc.setLiveMode(true);
+        vntc.setShootMode(true);
+        vntc.setStrafeMode(false);
     }
 
     // Called just before this Command runs the first time
@@ -63,12 +66,9 @@ public class Autonomous extends CommandBase {
     protected void execute() {
         // Drive forward 5 feet
 //        CommandBase.driveTrain.drive(60);
-        
-        VisionDistanceCalculations vdc = new VisionDistanceCalculations(VisionDistanceCalculations.RoboRealmVision);
-        VisionAngleCalculations vac = new VisionAngleCalculations();
-        
-        double distanceToGoal = vdc.getDistanceToGoal();
-        double angleToGoal = vac.getAngleToGoal(Robot.lastTarget);
+                
+        double distanceToGoal = VisionDistanceCalculations.getDistanceToGoal(VisionDistanceCalculations.RoboRealmVision);
+        double angleToGoal = VisionAngleCalculations.getAngleToGoal(Robot.lastTarget);
         
         if (autonomousTimer.get() < 0.5) {
             // Start nommer
@@ -76,61 +76,76 @@ public class Autonomous extends CommandBase {
             // Disable nommer
         }
         
-        if (distanceToGoal > 0.0) { // if we have a valid distance
-            double deltaDistance = distanceToGoal - VisionNetworkTableCommunication.getDesiredDistance();
-            // drive to goal
-            if (Math.abs(deltaDistance) < VisionNetworkTableCommunication.getDesiredDistanceEpsilon()) {
-                // in range, FIRE!
-                
-                if (LIVE_MODE)
+        // Check if distance exists and is valid
+        if (distanceToGoal > 0.0) {
+            // Calculalte the delta
+            double deltaDistance = distanceToGoal - vntc.getDesiredDistance();
+            // Check if it is at the correct distance to fire
+            if (Math.abs(deltaDistance) < vntc.getDesiredDistanceEpsilon()) {                
+                // If the robot is live, stop the drivetrain
+                if (LIVE_MODE) {
                     CommandBase.driveTrain.tankDrive(0, 0);
+                }
                 
+                // Wait half a second
                 Timer.delay(.5);
                 
+                // If the autonomous timer is greater than 5 seconds (because
+                // if we are in the last 5 seconds and the target's not hot,
+                // it means we missed the first one) OR the target is hot
                 if (autonomousTimer.get() > 5.0 || Robot.lastTarget.Hot) {
-                    // fire
-                    System.out.println("in firing position");
+                    // Fire
+                    System.out.println("Ready to fire");
+                    // If not at the correct distance
                     if (!AT_FIRING_DISTANCE) {
+                        // Setup some variables in order to figure out if the
+                        // robot should shoot
                         firingDistanceTime = autonomousTimer.get();
                         AT_FIRING_DISTANCE = true;
                     }
+                    
+                    // Check if we have time to fire
                     if (autonomousTimer.get() > 2.0 && firingDistanceTime > 0 &&
                             autonomousTimer.get() > firingDistanceTime + 1.0) {
-                        System.out.println("fire!!!");
+                        System.out.println("Firing");
+                        // Check if we should shoot
                         if (SHOOT_MODE) {
-                            // Add shooting code here
+                            // TODO: Add shooting code here
                         }
                         FIRED = true;
                     }
-                }
-                else {
+                } else {
                     
                 }
-            }
-            else if (Math.abs(deltaDistance) < VisionNetworkTableCommunication.getSlowDownDistance()) {
-                double scale = deltaDistance / VisionNetworkTableCommunication.getSlowDownDistance(); // between -1 and 1
-                double range = VisionNetworkTableCommunication.getMaxForwardSpeed() - VisionNetworkTableCommunication.getMinForwardSpeed();
+            // Check if we are running out of space to slowdown
+            } else if (Math.abs(deltaDistance) < vntc.getSlowDownDistance()) {
+                double scale = deltaDistance / vntc.getSlowDownDistance(); // between -1 and 1
+                double range = vntc.getMaxForwardSpeed() - vntc.getMinForwardSpeed();
                 double desiredSpeed = (minSpeed + range) * scale;
-                if (LIVE_MODE)
-                    CommandBase.driveTrain.tankDrive(1, 1);
-            }
-            else {
+                if (LIVE_MODE) {
+                    // TODO: add code to drive at a specific speed
+                }
+            // Calculate correct angle
+            } else {
+                // Calculate the angle to drive at
                 double sign = deltaDistance > 0 ? 1 : -1;
                 double angleSign = 0;
                 if (Math.abs(angleToGoal) > maxAngleToGoal) {
                     // Turn towards the goal so it stays in view
                     angleSign = angleToGoal > 0 ? 1 : -1;
                 }
-                //chassisDrive.tankDrive(sign * maxSpeed, sign * maxSpeed);
+                
                 if (LIVE_MODE) {
                     if (STRAFE_MODE) {
-                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
-                    }
-                    else {
-                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
+                        // TODO: add correct driving code
+                        //chassisDrive.tankDrive(sign * maxSpeed, sign * maxSpeed);
+//                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
+                    } else {
+                        // Add correct driving code
+//                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
                     }
                 }
-                System.out.println("driving towards position: " + sign * maxForwardSpeed + " angle: " + angleSign * maxAngleSpeed);
+                System.out.println("Driving towards: " + sign * maxForwardSpeed + " Angle: " + angleSign * maxAngleSpeed);
             }
         }
     }

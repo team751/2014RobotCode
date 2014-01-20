@@ -17,119 +17,218 @@ import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 public class VisionNetworkTableCommunication {
     private static NetworkTable netTable;
     
+    /**
+     * Sets up network table connection
+     */
     public VisionNetworkTableCommunication() {
         netTable = NetworkTable.getTable("SmartDashboard");
     }
     
-    public static boolean isConnectionAvailable() {
-        try {
-            getImageCount();
-            return true;
-        } catch (TableKeyNotDefinedException e) {
-            return false;
-        }
+    /**
+     * Check if a connection with the RoboRealm computer has been established
+     * @return connected
+     */
+    public boolean isConnectionAvailable() {
+        return getImageCount() != -1;
     }
     
-    public static double getImageCount() {
+    /**
+     * Gets the image count
+     * @return the image count
+     */
+    // Also used to check if connection is established
+    public double getImageCount() {
         try {
             return netTable.getNumber("IMAGE_COUNT", 0.0);
         } catch (TableKeyNotDefinedException e) {
-            return 0;
+            return -1;
         }
     }
     
-    public static NumberArray getRectangles() {
+    /**
+     * Gets the rectangles in the vision processing output
+     * @return array of targets
+     */
+    public NumberArray getRectangles() {
         final NumberArray targetArray = new NumberArray();
         netTable.retrieveValue("BFR_COORDINATES", targetArray);
         
         return targetArray;
     }
     
-    public static double getDesiredDistance() {
+    /**
+     * Gets the desired distance to the goal
+     * @return
+     */
+    public double getDesiredDistance() {
         return netTable.getNumber("DesiredDistance");
     }
     
-    public static double getDesiredDistanceEpsilon() {
+    /**
+     * Gets the desired distance epsilon
+     * @return
+     */
+    public double getDesiredDistanceEpsilon() {
         return netTable.getNumber("DesiredDistanceEpsilon");
     }
     
-    public static double getSlowDownDistance() {
+    /**
+     * Gets the slow down distance
+     * @return
+     */
+    public double getSlowDownDistance() {
         return netTable.getNumber("SlowDownDistance");
     }
     
-    public static double getMaxAngle() {
+    /**
+     * Gets the maximum angle
+     * @return
+     */
+    public double getMaxAngle() {
         return netTable.getNumber("MaxAngle");
     }
     
-    public static double getMaxForwardSpeed() {
+    /**
+     * Gets the max speed
+     * @return
+     */
+    public double getMaxForwardSpeed() {
         return netTable.getNumber("MaxForwardSpeed");
     }
     
-    public static double getMinForwardSpeed() {
+    /**
+     *
+     * @return
+     */
+    public double getMinForwardSpeed() {
         return netTable.getNumber("MinForwardSpeed");
     }
     
-    public static double getMaxAngleSpeed() {
+    /**
+     *
+     * @return
+     */
+    public double getMaxAngleSpeed() {
         return netTable.getNumber("MaxAngleSpeed");
     }
     
-    public static double getLiveMode() {
+    /**
+     *
+     * @return
+     */
+    public double getLiveMode() {
         return netTable.getNumber("LiveMode");
     }
     
-    public static double getShootMode() {
+    /**
+     *
+     * @return
+     */
+    public double getShootMode() {
         return netTable.getNumber("ShootMode");
     }
     
-    public static double getStrafeMode() {
+    /**
+     *
+     * @return
+     */
+    public double getStrafeMode() {
         return netTable.getNumber("StrafeMode");
     }
     
-    public static void setVisionDistance(double distance) {
+    /**
+     *
+     * @param distance
+     */
+    public void setVisionDistance(double distance) {
         netTable.putNumber("VisionDistance", distance);
     }
     
-    public static void setVisionAngle(double angle) {
+    /**
+     *
+     * @param angle
+     */
+    public void setVisionAngle(double angle) {
         netTable.putNumber("VisionAngle", angle);
     }
     
-    public static void setDesiredDistance(double desiredDistance) {
+    /**
+     *
+     * @param desiredDistance
+     */
+    public void setDesiredDistance(double desiredDistance) {
         netTable.putNumber("DesiredDistance", desiredDistance);
     }
 
-    public static void setDesiredDistanceEpsilon(double desiredDistanceEpsilon) {
+    /**
+     *
+     * @param desiredDistanceEpsilon
+     */
+    public void setDesiredDistanceEpsilon(double desiredDistanceEpsilon) {
         netTable.putNumber("DesiredDistanceEpsilon", desiredDistanceEpsilon);
     }
 
-    public static void setSlowDownDistance(double slowDownDistance) {
+    /**
+     *
+     * @param slowDownDistance
+     */
+    public void setSlowDownDistance(double slowDownDistance) {
         netTable.putNumber("SlowDownDistance", slowDownDistance);
     }
 
-    public static void setMaxAngle(double maxAngle) {
+    /**
+     *
+     * @param maxAngle
+     */
+    public void setMaxAngle(double maxAngle) {
         netTable.putNumber("MaxAngle", maxAngle);
     }
 
-    public static void setMaxForwardSpeed(double maxForwardSpeed) {
+    /**
+     *
+     * @param maxForwardSpeed
+     */
+    public void setMaxForwardSpeed(double maxForwardSpeed) {
         netTable.putNumber("MaxForwardSpeed", maxForwardSpeed);
     }
 
-    public static void setMinForwardSpeed(double minForwardSpeed) {
+    /**
+     *
+     * @param minForwardSpeed
+     */
+    public void setMinForwardSpeed(double minForwardSpeed) {
         netTable.putNumber("MinForwardSpeed", minForwardSpeed);
     }
 
-    public static void setMaxAngleSpeed(double maxAngleSpeed) {
+    /**
+     *
+     * @param maxAngleSpeed
+     */
+    public void setMaxAngleSpeed(double maxAngleSpeed) {
         netTable.putNumber("MaxAngleSpeed", maxAngleSpeed);
     }
 
-    public static void setLiveMode(boolean liveMode) {
+    /**
+     *
+     * @param liveMode
+     */
+    public void setLiveMode(boolean liveMode) {
         netTable.putBoolean("LiveMode", liveMode);
     }
 
-    public static void setShootMode(boolean shootMode) {
+    /**
+     *
+     * @param shootMode
+     */
+    public void setShootMode(boolean shootMode) {
         netTable.putBoolean("ShootMode", shootMode);
     }
 
-    public static void setStrafeMode(boolean strafeMode) {
+    /**
+     *
+     * @param strafeMode
+     */
+    public void setStrafeMode(boolean strafeMode) {
         netTable.putBoolean("StrafeMode", strafeMode);
     }
 }

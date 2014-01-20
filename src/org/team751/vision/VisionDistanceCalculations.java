@@ -43,7 +43,7 @@ public class VisionDistanceCalculations {
         return Math.tan(target.angle * VisionConstants.PI / 180) * target.distance;
     }
     
-    public static double getDistanceToGoal() {
+    double getDistanceToGoal() {
         // TODO: Cleanup if statements
         if (visionType == -1) {
             return getDistanceToGoalFromNetworkTables();
@@ -54,8 +54,16 @@ public class VisionDistanceCalculations {
         }
     }
     
+    public static double getDistanceToGoal(int visionTypeTemp) {
+        if (visionTypeTemp == cRIOVision) {
+            return getDistanceToGoalFromCRIO();
+        } else {
+            return getDistanceToGoalFromNetworkTables();
+        }
+    }
+    
     private static double getDistanceToGoalFromNetworkTables() {
-        NumberArray rectanglesArray = VisionNetworkTableCommunication.getRectangles();
+        NumberArray rectanglesArray = vntc.getRectangles();
             if (VisionConstants.DEBUG_LEVEL >= 3)
                 System.out.println("Number of points in array: " + rectanglesArray.size());
             
