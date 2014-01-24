@@ -6,6 +6,7 @@
 package org.team751.commands;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.base.Robot;
 import org.team751.vision.VisionAngleCalculations;
 import org.team751.vision.VisionDistanceCalculations;
@@ -64,11 +65,14 @@ public class Autonomous extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        SmartDashboard.putBoolean("fired", FIRED);
         // Drive forward 5 feet
 //        CommandBase.driveTrain.drive(60);
                 
         double distanceToGoal = VisionDistanceCalculations.getDistanceToGoal(VisionDistanceCalculations.RoboRealmVision);
         double angleToGoal = VisionAngleCalculations.getAngleToGoal(Robot.lastTarget);
+        
+        SmartDashboard.putNumber("distanceToGoal", distanceToGoal);
         
         if (autonomousTimer.get() < 0.5) {
             // Start nommer
@@ -124,6 +128,7 @@ public class Autonomous extends CommandBase {
                 double desiredSpeed = (minSpeed + range) * scale;
                 if (LIVE_MODE) {
                     // TODO: add code to drive at a specific speed
+                    SmartDashboard.putNumber("desiredSpeed", desiredSpeed);
                 }
             // Calculate correct angle
             } else {
@@ -134,6 +139,8 @@ public class Autonomous extends CommandBase {
                     // Turn towards the goal so it stays in view
                     angleSign = angleToGoal > 0 ? 1 : -1;
                 }
+                SmartDashboard.putNumber("angleToGoal", angleToGoal);
+                SmartDashboard.putNumber("angleSign", angleSign);
                 
                 if (LIVE_MODE) {
                     if (STRAFE_MODE) {

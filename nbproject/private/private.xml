@@ -5,6 +5,7 @@
         <group>
             <file>file:/Users/sambaumgarten/NetBeansProjects/ROBOT2014/src/org/team751/utils/Attack3.java</file>
             <file>file:/Users/sambaumgarten/NetBeansProjects/ROBOT2014/src/org/team751/commands/CommandBase.java</file>
+            <file>file:/Users/sambaumgarten/NetBeansProjects/ROBOT2014/src/org/team751/commands/Autonomous.java</file>
             <file>file:/Users/sambaumgarten/NetBeansProjects/ROBOT2014/src/org/team751/commands/drivetrain/DriveStraight.java</file>
             <file>file:/Users/sambaumgarten/NetBeansProjects/ROBOT2014/src/org/team751/base/OI.java</file>
             <file>file:/Users/sambaumgarten/NetBeansProjects/ROBOT2014/src/org/team751/utils/Navigator.java</file>
