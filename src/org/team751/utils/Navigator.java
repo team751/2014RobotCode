@@ -94,6 +94,8 @@ public class Navigator extends PeriodicTask implements Sendable,
 
 	/** Rotational acceleration, degrees/second squared */
 	private double rotationalAcceleration = 0;
+        
+        public Ultrasonic ultrasonic = new Ultrasonic(RobotMap.ultrasonicPingChannel, RobotMap.ultrasonicEchoChannel);
 
 	public Navigator() {
 		System.out.println("Navigator constructor called");
@@ -323,6 +325,15 @@ public class Navigator extends PeriodicTask implements Sendable,
 		public double pidGet() {
 			synchronized (Navigator.this) {
 				return getHeading();
+			}
+		}
+	};
+        
+        public final PIDSource ultrasonicPidSource = new PIDSource() {
+
+		public double pidGet() {
+			synchronized (Navigator.this) {
+				return ultrasonic.getRangeInches();
 			}
 		}
 	};

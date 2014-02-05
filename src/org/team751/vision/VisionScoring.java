@@ -27,6 +27,7 @@ public class VisionScoring {
             rects[i] = new Rect(rectanglesArray, i);
         }
         
+        // Returns an array of arrays.  Each array store the x and y value of the rect
         return rects;
     }
     

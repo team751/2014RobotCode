@@ -3,6 +3,7 @@ package org.team751.base;
 
 import org.team751.commands.Autonomous;
 import org.team751.commands.drivetrain.DriveStraight;
+import org.team751.commands.drivetrain.HoldAngle;
 import org.team751.utils.Attack3;
 
 /**
@@ -17,6 +18,7 @@ public class OI {
     public OI() {
         // Drive forwards
         leftJoystick.baseRearLeft.whenPressed(new DriveStraight(5*0.3048));
+        leftJoystick.baseLeftForward.whileHeld(new HoldAngle(10));
     }
     
     //// CREATING BUTTONS

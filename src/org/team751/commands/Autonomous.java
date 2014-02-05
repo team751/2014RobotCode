@@ -8,6 +8,8 @@ package org.team751.commands;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.base.Robot;
+import org.team751.commands.drivetrain.DriveStraight;
+import org.team751.utils.Navigator;
 import org.team751.vision.VisionAngleCalculations;
 import org.team751.vision.VisionDistanceCalculations;
 import org.team751.vision.VisionNetworkTableCommunication;
@@ -20,6 +22,8 @@ public class Autonomous extends CommandBase {
     Timer autonomousTimer;
     
     VisionNetworkTableCommunication vntc = new VisionNetworkTableCommunication();
+    Navigator nav = new Navigator();
+    DriveStraight ds;
     
     double desiredDistance;
     double desiredDistanceEpsilon;
@@ -35,6 +39,10 @@ public class Autonomous extends CommandBase {
     boolean AT_FIRING_DISTANCE = false;
     double firingDistanceTime = -1;
     boolean FIRED = false;
+    
+    double lastHeadingValue = -500;
+    boolean motorsTurningLeft = false;
+    boolean driving = false;
     
     public Autonomous() {
         // Use requires() here to declare subsystem dependencies
@@ -65,7 +73,47 @@ public class Autonomous extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double autonomousMode = SmartDashboard.getNumber("autonomousMode");
+        
         SmartDashboard.putBoolean("fired", FIRED);
+        
+        if (autonomousMode == 1) {
+            if (autonomousTimer.get() > 8.0 && !driving) {
+                double distance = nav.ultrasonicPidSource.pidGet();
+                ds = new DriveStraight(distance*0.0254);
+                ds.start();
+            } else if (!(Math.abs(0 - nav.headingPidSource.pidGet()) > 2) && !ds.isRunning()) {
+                FIRED = true;
+                System.out.println("SHOOOOTING because we are almost out of time and at the right distance but wrong angle.  Maybe this could be changed just to have a broader angle");
+            }
+            if (Math.abs(0 - nav.headingPidSource.pidGet()) > 2) {
+                if (lastHeadingValue != -500) {
+                    if (Math.abs(nav.headingPidSource.pidGet()) > lastHeadingValue) {
+                        motorsTurningLeft = !motorsTurningLeft;
+                    }
+                } else {
+                    lastHeadingValue = nav.headingPidSource.pidGet();
+                }
+                CommandBase.driveTrain.tankDrive(.5*(motorsTurningLeft == true ? -1 : 1), .5*(motorsTurningLeft == false ? -1 : 1));
+                return;
+            } else {
+                if (!driving) {
+                    double distance = nav.ultrasonicPidSource.pidGet();
+                    ds = new DriveStraight(distance*0.0254);
+                    ds.start();
+                    driving = true;
+                    SmartDashboard.putBoolean("DRIVING", driving);
+                }
+            }
+            
+            if (driving && !ds.isRunning() && (autonomousTimer.get() > 5.0 || Robot.lastTarget.Hot)) {
+                FIRED = true;
+                System.out.println("SHOOOOTING because the target is hot or we missed the hot target");
+            }
+            
+            return;
+        }
+        
         // Drive forward 5 feet
 //        CommandBase.driveTrain.drive(60);
                 
@@ -90,9 +138,6 @@ public class Autonomous extends CommandBase {
                 if (LIVE_MODE) {
                     CommandBase.driveTrain.tankDrive(0, 0);
                 }
-                
-                // Wait half a second
-                Timer.delay(.5);
                 
                 // If the autonomous timer is greater than 5 seconds (because
                 // if we are in the last 5 seconds and the target's not hot,

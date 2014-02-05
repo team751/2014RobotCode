@@ -15,6 +15,8 @@ import org.team751.commands.drivetrain.DriveStraight;
 import org.team751.commands.drivetrain.CheesyJoystickDrive;
 import org.team751.utils.PolyMotorRobotDrive;
 import org.team751.cheesy.CheesyDrive;
+import org.team751.subsystems.drivetrain.LeftDriveTrainPID;
+import org.team751.subsystems.drivetrain.RightDriveTrainPID;
 
 /**
  *
@@ -31,7 +33,12 @@ public class Drivetrain extends Subsystem {
     public boolean shouldStop = false;
 
     private final PolyMotorRobotDrive drive;
+    private final LeftDriveTrainPID ldtpid;
+    private final RightDriveTrainPID rdtpid;
     private final long lastRunTime = System.currentTimeMillis();
+    
+    public final double leftDriveSpeed = 0;
+    public final double rightDriveSpeed = 0;
     
     /**
      * Keeps track of Cheesy Drive data
@@ -40,6 +47,8 @@ public class Drivetrain extends Subsystem {
     
     public Drivetrain() {
         drive = new PolyMotorRobotDrive(new SpeedController[]{leftDriveJaguar}, new SpeedController[]{rightDriveJaguar});
+        ldtpid = new LeftDriveTrainPID();
+        rdtpid = new RightDriveTrainPID();
     }
     
     /**
@@ -99,6 +108,22 @@ public class Drivetrain extends Subsystem {
     public void drive(double inches) {
         DriveStraight command = new DriveStraight(inches*0.0254);
         command.start();
+    }
+    
+    public double getLeftSpeed() {
+        return leftDriveJaguar.getSpeed();
+    }
+        
+    public double getRightSpeed() {
+        return rightDriveJaguar.getSpeed();
+    }
+    
+    public void setLeftRPM(double rpm) {
+        ldtpid.setSetpoint(rpm);
+    }
+    
+    public void setRightRPM(double rpm) {
+        rdtpid.setSetpoint(rpm);
     }
     
     /**

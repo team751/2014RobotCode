@@ -38,5 +38,6 @@ public class VisionConstants {
     //Maximum number of particles to process
     public static final int MAX_PARTICLES = 8;
     
-    public static final int DEBUG_LEVEL = Preferences.getInstance().getInt("VisionDebugLevel", 1);
+//    public static final int DEBUG_LEVEL = Preferences.getInstance().getInt("VisionDebugLevel", 1);
+    public static final int DEBUG_LEVEL = 4; // Set to max debug level
 }

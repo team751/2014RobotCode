@@ -42,9 +42,9 @@ public class Vision extends Subsystem {
             useNetTable = true;
         } else {
             // If not set it to false
-            useNetTable = false;
+//            useNetTable = false;
             // Because we cannot connect, we will use the cRIO for processing
-            cv = new cRIOVision();
+//            cv = new cRIOVision();
         }
     }
     

@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.commands.Autonomous;
 import org.team751.commands.CommandBase;
 import org.team751.utils.Diagnostic;
@@ -39,6 +40,9 @@ public class Robot extends IterativeRobot {
         // instantiate the command used for the autonomous period
         autonomousCommand = new Autonomous();
         lastTarget = new TargetReport();
+        
+        SmartDashboard.putNumber("autonomousMode", 0);
+                
 
         // Initialize all subsystems
         CommandBase.init();
