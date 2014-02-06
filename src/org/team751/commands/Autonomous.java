@@ -78,6 +78,10 @@ public class Autonomous extends CommandBase {
         SmartDashboard.putBoolean("fired", FIRED);
         
         if (autonomousMode == 1) {
+            if (FIRED) {
+                return;
+            }
+            
             if (autonomousTimer.get() > 8.0 && !driving) {
                 double distance = nav.ultrasonicPidSource.pidGet();
                 ds = new DriveStraight(distance*0.0254);
