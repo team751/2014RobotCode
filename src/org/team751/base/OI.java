@@ -4,6 +4,8 @@ package org.team751.base;
 import org.team751.commands.Autonomous;
 import org.team751.commands.drivetrain.DriveStraight;
 import org.team751.commands.drivetrain.HoldAngle;
+import org.team751.commands.shooter.FireShooter;
+import org.team751.commands.shooter.RetractShooter;
 import org.team751.utils.Attack3;
 
 /**
@@ -12,13 +14,18 @@ import org.team751.utils.Attack3;
  */
 public class OI {
     
-    public Attack3 leftJoystick = new Attack3(1);
-    public Attack3 rightJoystick = new Attack3(2);
+    public Attack3 operatorJoystick = new Attack3(1);
+    public Attack3 driverJoystick = new Attack3(2);
     
     public OI() {
         // Drive forwards
-        leftJoystick.baseRearLeft.whenPressed(new DriveStraight(5*0.3048));
-        leftJoystick.baseLeftForward.whileHeld(new HoldAngle(10));
+        driverJoystick.baseRearLeft.whenPressed(new DriveStraight(3*0.3048));
+        driverJoystick.baseLeftForward.whileHeld(new HoldAngle(10));
+        // Top front and top back are used by Cheesy Drive
+        
+        operatorJoystick.trigger.whenPressed(new FireShooter());
+        operatorJoystick.topBack.whenPressed(new RetractShooter());
+        
     }
     
     //// CREATING BUTTONS

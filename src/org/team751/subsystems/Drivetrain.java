@@ -51,9 +51,6 @@ public class Drivetrain extends Subsystem {
         rdtpid = new RightDriveTrainPID();
     }
     
-    /**
-     *
-     */
     public void initDefaultCommand() {
         setDefaultCommand(new CheesyJoystickDrive());
     }
@@ -110,18 +107,34 @@ public class Drivetrain extends Subsystem {
         command.start();
     }
     
+    /**
+     * The speed of the left motors (what it should be)
+     * @return double speed
+     */
     public double getLeftSpeed() {
         return leftDriveJaguar.getSpeed();
     }
-        
+    
+    /**
+     * The speed of the right motors (what it should be)
+     * @return speed
+     */
     public double getRightSpeed() {
         return rightDriveJaguar.getSpeed();
     }
     
+    /**
+     * Set the speed that the left motors should go at in RPM
+     * @param rpm 
+     */
     public void setLeftRPM(double rpm) {
         ldtpid.setSetpoint(rpm);
     }
-    
+
+    /**
+     * Set the speed that the right motors should go at in RPM
+     * @param rpm 
+     */
     public void setRightRPM(double rpm) {
         rdtpid.setSetpoint(rpm);
     }

@@ -42,12 +42,17 @@ public class Robot extends IterativeRobot {
         lastTarget = new TargetReport();
         
         SmartDashboard.putNumber("autonomousMode", 0);
-                
+
+        // Start compressor
+        RobotMap.compressor.start();
 
         // Initialize all subsystems
         CommandBase.init();
     }
 
+    /**
+     * Called when autonomous mode starts
+     */
     public void autonomousInit() {
         // schedule the autonomous command (example)
         autonomousCommand.start();
@@ -60,6 +65,9 @@ public class Robot extends IterativeRobot {
         Scheduler.getInstance().run();
     }
 
+    /**
+     * Called when teleop mode starts
+     */
     public void teleopInit() {
 	// This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to 

@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>package org.team751.cheesy.util;<a name="line.1"></a>
+<span class="sourceLineNo">002</span><a name="line.2"></a>
+<span class="sourceLineNo">003</span>/**<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * A continuous time acceleration profile.<a name="line.4"></a>
+<span class="sourceLineNo">005</span> *<a name="line.5"></a>
+<span class="sourceLineNo">006</span> * An instance of continuous data is assumed to have a constant rate of change<a name="line.6"></a>
+<span class="sourceLineNo">007</span> * over a period of time. Thus, over any given time increment, acceleration is<a name="line.7"></a>
+<span class="sourceLineNo">008</span> * assumed to be constant. Thus data for this filter does not need to be polled<a name="line.8"></a>
+<span class="sourceLineNo">009</span> * necessarily periodically.<a name="line.9"></a>
+<span class="sourceLineNo">010</span> */<a name="line.10"></a>
+<span class="sourceLineNo">011</span>public class ContinuousAccelFilter extends AccelFilterBase {<a name="line.11"></a>
+<span class="sourceLineNo">012</span><a name="line.12"></a>
+<span class="sourceLineNo">013</span>    public ContinuousAccelFilter(double currPos, double currVel, double currAcc) {<a name="line.13"></a>
+<span class="sourceLineNo">014</span>        super(currPos, currVel, currAcc);<a name="line.14"></a>
+<span class="sourceLineNo">015</span>    }<a name="line.15"></a>
+<span class="sourceLineNo">016</span>    <a name="line.16"></a>
+<span class="sourceLineNo">017</span>    public ContinuousAccelFilter() {<a name="line.17"></a>
+<span class="sourceLineNo">018</span>        this(0, 0, 0);<a name="line.18"></a>
+<span class="sourceLineNo">019</span>    }<a name="line.19"></a>
+<span class="sourceLineNo">020</span><a name="line.20"></a>
+<span class="sourceLineNo">021</span>    public void CalcSystem(double distance_to_target, double v, double goal_v, double max_a, double max_v, double dt) {<a name="line.21"></a>
+<span class="sourceLineNo">022</span><a name="line.22"></a>
+<span class="sourceLineNo">023</span>        double dt2 = 0, a = 0, const_time = 0, dtf = 0, af = 0;<a name="line.23"></a>
+<span class="sourceLineNo">024</span><a name="line.24"></a>
+<span class="sourceLineNo">025</span>        //Assemble an object to pass by reference<a name="line.25"></a>
+<span class="sourceLineNo">026</span>        MaxAccelTimeData data = new MaxAccelTimeData();<a name="line.26"></a>
+<span class="sourceLineNo">027</span>        data.t1 = dt2;<a name="line.27"></a>
+<span class="sourceLineNo">028</span>        data.a1 = a;<a name="line.28"></a>
+<span class="sourceLineNo">029</span>        data.ct = const_time;<a name="line.29"></a>
+<span class="sourceLineNo">030</span>        data.t2 = dtf;<a name="line.30"></a>
+<span class="sourceLineNo">031</span>        data.a2 = af;<a name="line.31"></a>
+<span class="sourceLineNo">032</span><a name="line.32"></a>
+<span class="sourceLineNo">033</span>        maxAccelTime(distance_to_target, v, goal_v, max_a, max_v, data);<a name="line.33"></a>
+<span class="sourceLineNo">034</span><a name="line.34"></a>
+<span class="sourceLineNo">035</span>        //Get the data from the passed-by-reference object back into local variables<a name="line.35"></a>
+<span class="sourceLineNo">036</span>        dt2 = data.t1;<a name="line.36"></a>
+<span class="sourceLineNo">037</span>        a = data.a1;<a name="line.37"></a>
+<span class="sourceLineNo">038</span>        const_time = data.ct;<a name="line.38"></a>
+<span class="sourceLineNo">039</span>        dtf = data.t2;<a name="line.39"></a>
+<span class="sourceLineNo">040</span>        af = data.a2;<a name="line.40"></a>
+<span class="sourceLineNo">041</span><a name="line.41"></a>
+<span class="sourceLineNo">042</span>        double time_left = dt;<a name="line.42"></a>
+<span class="sourceLineNo">043</span>        if (dt2 &gt; time_left) {<a name="line.43"></a>
+<span class="sourceLineNo">044</span>            UpdateVals(a, time_left);<a name="line.44"></a>
+<span class="sourceLineNo">045</span>        } else {<a name="line.45"></a>
+<span class="sourceLineNo">046</span>            UpdateVals(a, dt2);<a name="line.46"></a>
+<span class="sourceLineNo">047</span>            time_left -= dt2;<a name="line.47"></a>
+<span class="sourceLineNo">048</span>            if (const_time &gt; time_left) {<a name="line.48"></a>
+<span class="sourceLineNo">049</span>                UpdateVals(0, time_left);<a name="line.49"></a>
+<span class="sourceLineNo">050</span>            } else {<a name="line.50"></a>
+<span class="sourceLineNo">051</span>                UpdateVals(0, const_time);<a name="line.51"></a>
+<span class="sourceLineNo">052</span>                time_left -= const_time;<a name="line.52"></a>
+<span class="sourceLineNo">053</span>                if (dtf &gt; time_left) {<a name="line.53"></a>
+<span class="sourceLineNo">054</span>                    UpdateVals(af, time_left);<a name="line.54"></a>
+<span class="sourceLineNo">055</span>                } else {<a name="line.55"></a>
+<span class="sourceLineNo">056</span>                    UpdateVals(af, dtf);<a name="line.56"></a>
+<span class="sourceLineNo">057</span>                    time_left -= dtf;<a name="line.57"></a>
+<span class="sourceLineNo">058</span>                    UpdateVals(0, time_left);<a name="line.58"></a>
+<span class="sourceLineNo">059</span>                }<a name="line.59"></a>
+<span class="sourceLineNo">060</span>            }<a name="line.60"></a>
+<span class="sourceLineNo">061</span>        }<a name="line.61"></a>
+<span class="sourceLineNo">062</span>    }<a name="line.62"></a>
+<span class="sourceLineNo">063</span><a name="line.63"></a>
+<span class="sourceLineNo">064</span>    protected void UpdateVals(double acc, double dt) {<a name="line.64"></a>
+<span class="sourceLineNo">065</span>        // basic kinematics<a name="line.65"></a>
+<span class="sourceLineNo">066</span>        m_currPos += m_currVel * dt + acc * .5 * dt * dt;<a name="line.66"></a>
+<span class="sourceLineNo">067</span>        m_currVel += acc * dt;<a name="line.67"></a>
+<span class="sourceLineNo">068</span>        m_currAcc = acc;<a name="line.68"></a>
+<span class="sourceLineNo">069</span>    }<a name="line.69"></a>
+<span class="sourceLineNo">070</span><a name="line.70"></a>
+<span class="sourceLineNo">071</span>    private void maxAccelTime(double distance_left, double curr_vel, double goal_vel, double max_a, double max_v, MaxAccelTimeData data) {<a name="line.71"></a>
+<span class="sourceLineNo">072</span><a name="line.72"></a>
+<span class="sourceLineNo">073</span>        double const_time = 0;<a name="line.73"></a>
+<span class="sourceLineNo">074</span>        double start_a;<a name="line.74"></a>
+<span class="sourceLineNo">075</span>        if (distance_left &gt; 0) {<a name="line.75"></a>
+<span class="sourceLineNo">076</span>            start_a = max_a;<a name="line.76"></a>
+<span class="sourceLineNo">077</span>        } else if (distance_left == 0) {<a name="line.77"></a>
+<span class="sourceLineNo">078</span>            data.t1 = 0;<a name="line.78"></a>
+<span class="sourceLineNo">079</span>            data.a1 = 0;<a name="line.79"></a>
+<span class="sourceLineNo">080</span>            data.ct = 0;<a name="line.80"></a>
+<span class="sourceLineNo">081</span>            data.t2 = 0;<a name="line.81"></a>
+<span class="sourceLineNo">082</span>            data.a2 = 0;<a name="line.82"></a>
+<span class="sourceLineNo">083</span>            return;<a name="line.83"></a>
+<span class="sourceLineNo">084</span>        } else {<a name="line.84"></a>
+<span class="sourceLineNo">085</span>            maxAccelTime(-distance_left, -curr_vel, -goal_vel, max_a, max_v, data);<a name="line.85"></a>
+<span class="sourceLineNo">086</span>            data.a1 *= -1;<a name="line.86"></a>
+<span class="sourceLineNo">087</span>            data.a2 *= -1;<a name="line.87"></a>
+<span class="sourceLineNo">088</span>            return;<a name="line.88"></a>
+<span class="sourceLineNo">089</span>        }<a name="line.89"></a>
+<span class="sourceLineNo">090</span>        double max_accel_velocity = distance_left * 2 * Math.abs(start_a) + curr_vel * curr_vel;<a name="line.90"></a>
+<span class="sourceLineNo">091</span>        if (max_accel_velocity &gt; 0) {<a name="line.91"></a>
+<span class="sourceLineNo">092</span>            max_accel_velocity = Math.sqrt(max_accel_velocity);<a name="line.92"></a>
+<span class="sourceLineNo">093</span>        } else {<a name="line.93"></a>
+<span class="sourceLineNo">094</span>            max_accel_velocity = -Math.sqrt(-max_accel_velocity);<a name="line.94"></a>
+<span class="sourceLineNo">095</span>        }<a name="line.95"></a>
+<span class="sourceLineNo">096</span><a name="line.96"></a>
+<span class="sourceLineNo">097</span>        // Since we know what we'd have to do if we kept after it to decelerate, we know the sign of the acceleration.<a name="line.97"></a>
+<span class="sourceLineNo">098</span>        double final_a;<a name="line.98"></a>
+<span class="sourceLineNo">099</span>        if (max_accel_velocity &gt; goal_vel) {<a name="line.99"></a>
+<span class="sourceLineNo">100</span>            final_a = -max_a;<a name="line.100"></a>
+<span class="sourceLineNo">101</span>        } else {<a name="line.101"></a>
+<span class="sourceLineNo">102</span>            final_a = max_a;<a name="line.102"></a>
+<span class="sourceLineNo">103</span>        }<a name="line.103"></a>
+<span class="sourceLineNo">104</span><a name="line.104"></a>
+<span class="sourceLineNo">105</span>        // We now know the top velocity we can get to<a name="line.105"></a>
+<span class="sourceLineNo">106</span>        double top_v = Math.sqrt((distance_left + (curr_vel * curr_vel) / (2.0 * start_a) + (goal_vel * goal_vel) / (2.0 * final_a)) / (-1.0 / (2.0 * final_a) + 1.0 / (2.0 * start_a)));<a name="line.106"></a>
+<span class="sourceLineNo">107</span><a name="line.107"></a>
+<span class="sourceLineNo">108</span>        // If it is too fast, we now know how long we get to accelerate for and how long to go at constant velocity<a name="line.108"></a>
+<span class="sourceLineNo">109</span>        double accel_time;<a name="line.109"></a>
+<span class="sourceLineNo">110</span>        if (top_v &gt; max_v) {<a name="line.110"></a>
+<span class="sourceLineNo">111</span>            accel_time = (max_v - curr_vel) / max_a;<a name="line.111"></a>
+<span class="sourceLineNo">112</span>            const_time = (distance_left + (goal_vel * goal_vel - max_v * max_v) / (2.0 * max_a)) / max_v;<a name="line.112"></a>
+<span class="sourceLineNo">113</span>        } else {<a name="line.113"></a>
+<span class="sourceLineNo">114</span>            accel_time = (top_v - curr_vel) / start_a;<a name="line.114"></a>
+<span class="sourceLineNo">115</span>        }<a name="line.115"></a>
+<span class="sourceLineNo">116</span><a name="line.116"></a>
+<span class="sourceLineNo">117</span>        //No assert in CLDC 1.0<a name="line.117"></a>
+<span class="sourceLineNo">118</span>//        assert (top_v &gt; -max_v);<a name="line.118"></a>
+<span class="sourceLineNo">119</span><a name="line.119"></a>
+<span class="sourceLineNo">120</span>        data.t1 = accel_time;<a name="line.120"></a>
+<span class="sourceLineNo">121</span>        data.a1 = start_a;<a name="line.121"></a>
+<span class="sourceLineNo">122</span>        data.ct = const_time;<a name="line.122"></a>
+<span class="sourceLineNo">123</span>        data.t2 = (goal_vel - top_v) / final_a;<a name="line.123"></a>
+<span class="sourceLineNo">124</span>        data.a2 = final_a;<a name="line.124"></a>
+<span class="sourceLineNo">125</span>    }<a name="line.125"></a>
+<span class="sourceLineNo">126</span><a name="line.126"></a>
+<span class="sourceLineNo">127</span>    /**<a name="line.127"></a>
+<span class="sourceLineNo">128</span>     * Stores all the variables that are passed by reference in the C++ version<a name="line.128"></a>
+<span class="sourceLineNo">129</span>     * of maxAccelTime(). The Java version passes a reference to an object of<a name="line.129"></a>
+<span class="sourceLineNo">130</span>     * this class, in which the values can be changed.<a name="line.130"></a>
+<span class="sourceLineNo">131</span>     */<a name="line.131"></a>
+<span class="sourceLineNo">132</span>    private static class MaxAccelTimeData {<a name="line.132"></a>
+<span class="sourceLineNo">133</span><a name="line.133"></a>
+<span class="sourceLineNo">134</span>        /**<a name="line.134"></a>
+<span class="sourceLineNo">135</span>         * Time 1<a name="line.135"></a>
+<span class="sourceLineNo">136</span>         */<a name="line.136"></a>
+<span class="sourceLineNo">137</span>        public double t1;<a name="line.137"></a>
+<span class="sourceLineNo">138</span>        /**<a name="line.138"></a>
+<span class="sourceLineNo">139</span>         * Acceleration 1<a name="line.139"></a>
+<span class="sourceLineNo">140</span>         */<a name="line.140"></a>
+<span class="sourceLineNo">141</span>        public double a1;<a name="line.141"></a>
+<span class="sourceLineNo">142</span>        /**<a name="line.142"></a>
+<span class="sourceLineNo">143</span>         * Constant time<a name="line.143"></a>
+<span class="sourceLineNo">144</span>         */<a name="line.144"></a>
+<span class="sourceLineNo">145</span>        public double ct;<a name="line.145"></a>
+<span class="sourceLineNo">146</span>        /**<a name="line.146"></a>
+<span class="sourceLineNo">147</span>         * Time 2<a name="line.147"></a>
+<span class="sourceLineNo">148</span>         */<a name="line.148"></a>
+<span class="sourceLineNo">149</span>        public double t2;<a name="line.149"></a>
+<span class="sourceLineNo">150</span>        /**<a name="line.150"></a>
+<span class="sourceLineNo">151</span>         * Acceleration 2<a name="line.151"></a>
+<span class="sourceLineNo">152</span>         */<a name="line.152"></a>
+<span class="sourceLineNo">153</span>        public double a2;<a name="line.153"></a>
+<span class="sourceLineNo">154</span>    }<a name="line.154"></a>
+<span class="sourceLineNo">155</span>};<a name="line.155"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

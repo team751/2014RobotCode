@@ -1,0 +1,105 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<title>Source code</title>
+<link rel="stylesheet" type="text/css" href="../../../../stylesheet.css" title="Style">
+</head>
+<body>
+<div class="sourceContainer">
+<pre><span class="sourceLineNo">001</span>/*<a name="line.1"></a>
+<span class="sourceLineNo">002</span> * To change this license header, choose License Headers in Project Properties.<a name="line.2"></a>
+<span class="sourceLineNo">003</span> * To change this template file, choose Tools | Templates<a name="line.3"></a>
+<span class="sourceLineNo">004</span> * and open the template in the editor.<a name="line.4"></a>
+<span class="sourceLineNo">005</span> */<a name="line.5"></a>
+<span class="sourceLineNo">006</span><a name="line.6"></a>
+<span class="sourceLineNo">007</span>package org.team751.vision;<a name="line.7"></a>
+<span class="sourceLineNo">008</span><a name="line.8"></a>
+<span class="sourceLineNo">009</span>import edu.wpi.first.wpilibj.camera.AxisCamera;<a name="line.9"></a>
+<span class="sourceLineNo">010</span>import edu.wpi.first.wpilibj.image.CriteriaCollection;<a name="line.10"></a>
+<span class="sourceLineNo">011</span>import edu.wpi.first.wpilibj.image.NIVision;<a name="line.11"></a>
+<span class="sourceLineNo">012</span>import edu.wpi.first.wpilibj.networktables2.type.NumberArray;<a name="line.12"></a>
+<span class="sourceLineNo">013</span><a name="line.13"></a>
+<span class="sourceLineNo">014</span>/**<a name="line.14"></a>
+<span class="sourceLineNo">015</span> *<a name="line.15"></a>
+<span class="sourceLineNo">016</span> * @author sambaumgarten<a name="line.16"></a>
+<span class="sourceLineNo">017</span> */<a name="line.17"></a>
+<span class="sourceLineNo">018</span>public class cRIOVision {<a name="line.18"></a>
+<span class="sourceLineNo">019</span>    AxisCamera camera;          // the axis camera object (connected to the switch)<a name="line.19"></a>
+<span class="sourceLineNo">020</span>    CriteriaCollection cc;      // the criteria for doing the particle filter operation<a name="line.20"></a>
+<span class="sourceLineNo">021</span>    <a name="line.21"></a>
+<span class="sourceLineNo">022</span>    public cRIOVision() {<a name="line.22"></a>
+<span class="sourceLineNo">023</span>        camera = AxisCamera.getInstance();  // get an instance of the camera<a name="line.23"></a>
+<span class="sourceLineNo">024</span>        cc = new CriteriaCollection();      // create the criteria for the particle filter<a name="line.24"></a>
+<span class="sourceLineNo">025</span>        cc.addCriteria(NIVision.MeasurementType.IMAQ_MT_AREA, VisionConstants.AREA_MINIMUM, 65535, false);<a name="line.25"></a>
+<span class="sourceLineNo">026</span>    }<a name="line.26"></a>
+<span class="sourceLineNo">027</span>    <a name="line.27"></a>
+<span class="sourceLineNo">028</span>    public NumberArray getRectangles() {<a name="line.28"></a>
+<span class="sourceLineNo">029</span>        final NumberArray targetArray = new NumberArray();<a name="line.29"></a>
+<span class="sourceLineNo">030</span>        // TODO: Implement with 2014VisionSampleProject<a name="line.30"></a>
+<span class="sourceLineNo">031</span>        return targetArray;<a name="line.31"></a>
+<span class="sourceLineNo">032</span>    }<a name="line.32"></a>
+<span class="sourceLineNo">033</span>}<a name="line.33"></a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre>
+</div>
+</body>
+</html>

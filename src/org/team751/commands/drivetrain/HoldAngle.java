@@ -45,7 +45,7 @@ public class HoldAngle extends CommandBase {
             return;
         }
         
-        // Any angle within 2º is fine (also helps prevent oscillation
+        // Any angle within 2º is fine (also helps prevent oscillation)
         float delta = (float)(angleToHold - angle);
         if (Math.abs(delta) < 2) {
             CommandBase.driveTrain.tankDrive(0.0, 0.0);

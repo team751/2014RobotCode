@@ -1,5 +1,6 @@
 package org.team751.base;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
 import org.team751.subsystems.Drivetrain;
@@ -22,15 +23,57 @@ public class RobotMap {
     // public static final int rangefinderModule = 1;
     
     // Connections
+    
+    // MOTORS
+    /**
+     * The PWM connector the left drivetrain motors are attached to
+     */
     public static final int leftDrivePWM = 1;
+    /**
+     * The PWM connector the right drivetrain motors are attached to
+     */
     public static final int rightDrivePWM = 2;
+    
+    // RELAYS
+    /**
+     * The relay connector the compressor is attached to
+     */
+    public static final int compressorRelay = 3;
+    
+    // ENCODERS
+    /**
+     * The digital input the left drivetrain encoder A is attached to
+     */
     public static final int leftDriveEncoderChannelA = 1;
+    /**
+     * The digital input the left drivetrain encoder B is attached to
+     */
     public static final int leftDriveEncoderChannelB = 2;
+    /**
+     * The digital input the right drivetrain encoder A is attached to
+     */
     public static final int rightDriveEncoderChannelA = 3;
+    /**
+     * The digital input the right drivetrain encoder B is attached to
+     */
     public static final int rightDriveEncoderChannelB = 4;
+    
+    // PNEUMATICS
+    /**
+     * The port the pressure switch is on
+     */
+    public static final int pressureSwitchInput = 2;
+    
+    // NAVIGATION
+    /**
+     * The digital inputs the gyro is attached to
+     */
     public static final int gyroChannel = 1;
-    public static final int ultrasonicPingChannel = 2;
-    public static final int ultrasonicEchoChannel = 3;
+    /**
+     * The analog input the ultrasonic sensor is attached to
+     */
+    public static final int ultrasonicChannel = 1;
+    
     
     // Speed Controllers
     public static final Jaguar leftDrivetrainJaguar = new Jaguar(RobotMap.leftDrivePWM);
@@ -39,4 +82,7 @@ public class RobotMap {
     // Encoders
     public static final Encoder leftDriveEncoder = new Encoder(RobotMap.leftDriveEncoderChannelA, RobotMap.leftDriveEncoderChannelB);
     public static final Encoder rightDriveEncoder = new Encoder(RobotMap.rightDriveEncoderChannelA, RobotMap.rightDriveEncoderChannelB);
+    
+    // Pneumatics
+    public static final Compressor compressor = new Compressor(pressureSwitchInput, compressorRelay);
 }

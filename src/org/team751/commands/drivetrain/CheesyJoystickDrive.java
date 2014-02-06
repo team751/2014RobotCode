@@ -17,14 +17,14 @@ public class CheesyJoystickDrive extends CommandBase {
     }
 
     protected void execute() {
-        double x = oi.leftJoystick.getX();
-        double y = oi.leftJoystick.getY();
+        double x = oi.driverJoystick.getX();
+        double y = oi.driverJoystick.getY();
         
 	// Use simple, non-cheesy drive code if button 3 is pressed
-        boolean simpleDrive = oi.leftJoystick.getRawButton(3);
+        boolean simpleDrive = oi.driverJoystick.getRawButton(3);
         
 	// If the robot should only be allowed to drive straight
-        boolean straight = oi.leftJoystick.getRawButton(2);
+        boolean straight = oi.driverJoystick.getRawButton(2);
 	if (straight) {
             // disable turning
             x = 0;
@@ -34,7 +34,7 @@ public class CheesyJoystickDrive extends CommandBase {
         //This changes it back so that forward is positive.
         y = -y;
         
-	if(simpleDrive) {
+	if (simpleDrive) {
 		driveTrain.arcadeDrive(y, x);
 	} else {
             // quickTurn seems to rotate back once the joystick is released,
