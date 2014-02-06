@@ -3,7 +3,7 @@ package org.team751.commands.drivetrain;
 import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team751.base.PIDConstants;
+import org.team751.PIDConstants;
 import org.team751.commands.CommandBase;
 
 /**

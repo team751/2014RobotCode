@@ -7,7 +7,7 @@ package org.team751.commands;
 
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team751.base.Robot;
+import org.team751.Robot;
 import org.team751.commands.drivetrain.DriveStraight;
 import org.team751.utils.Navigator;
 import org.team751.vision.VisionAngleCalculations;

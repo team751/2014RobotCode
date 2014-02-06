@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Jaguar;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 import edu.wpi.first.wpilibj.command.Subsystem;
-import org.team751.base.RobotMap;
+import org.team751.RobotMap;
 import org.team751.commands.drivetrain.DriveStraight;
 import org.team751.commands.drivetrain.CheesyJoystickDrive;
 import org.team751.utils.PolyMotorRobotDrive;

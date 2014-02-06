@@ -2,8 +2,8 @@ package org.team751.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.team751.base.OI;
-import org.team751.base.RobotMap;
+import org.team751.OI;
+import org.team751.RobotMap;
 import org.team751.subsystems.Drivetrain;
 import org.team751.utils.Navigator;
 

@@ -5,7 +5,7 @@
  */
 package org.team751.commands.drivetrain;
 
-import org.team751.base.Robot;
+import org.team751.Robot;
 import org.team751.commands.CommandBase;
 import org.team751.vision.VisionAngleCalculations;
 import org.team751.vision.VisionNetworkTableCommunication;

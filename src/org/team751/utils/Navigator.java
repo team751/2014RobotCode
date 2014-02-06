@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.livewindow.LiveWindowSendable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.ITable;
-import org.team751.base.RobotMap;
+import org.team751.RobotMap;
 
 /**
  * This subsystem-like class keeps track of the robot's location relative to its

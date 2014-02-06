@@ -15,7 +15,7 @@ import edu.wpi.first.wpilibj.image.NIVision;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.networktables2.type.NumberArray;
-import org.team751.base.Robot;
+import org.team751.Robot;
 import org.team751.vision.utils.Rect;
 import org.team751.vision.utils.Scores;
 import org.team751.vision.utils.TargetReport;
