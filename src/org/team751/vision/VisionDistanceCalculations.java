@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.networktables2.type.NumberArray;
 import org.team751.Robot;
+import org.team751.utils.Logger;
 import org.team751.vision.utils.Rect;
 import org.team751.vision.utils.Scores;
 import org.team751.vision.utils.TargetReport;
@@ -65,12 +66,12 @@ public class VisionDistanceCalculations {
     private static double getDistanceToGoalFromNetworkTables() {
         NumberArray rectanglesArray = vntc.getRectangles();
             if (VisionConstants.DEBUG_LEVEL >= 3)
-                System.out.println("Number of points in array: " + rectanglesArray.size());
+                Logger.staticPrintln("Number of points in array: " + rectanglesArray.size());
             
             TargetReport target = new TargetReport();
             if (rectanglesArray.size() > 0) {
                 if (rectanglesArray.size() % 8 != 0) {
-                    System.out.println("Error: Number of points in array not divisible by 8!");
+                    Logger.staticPrintln("Error: Number of points in array not divisible by 8!");
                 }
                 else {
                     int verticalTargets[] = new int[VisionConstants.MAX_PARTICLES];
@@ -92,25 +93,25 @@ public class VisionDistanceCalculations {
                         scores[i].aspectRatioVertical = VisionScoring.scoreAspectRatio(rectangles[i], true);
                         scores[i].aspectRatioHorizontal = VisionScoring.scoreAspectRatio(rectangles[i], false);
                         if (VisionConstants.DEBUG_LEVEL >= 3)
-                            System.out.println("AspectRatios: " + scores[i].aspectRatioVertical + " " + scores[i].aspectRatioHorizontal);
+                            Logger.staticPrintln("AspectRatios: " + scores[i].aspectRatioVertical + " " + scores[i].aspectRatioHorizontal);
                         //Check if the particle is a horizontal target, if not, check if it's a vertical target
                         if(VisionScoring.scoreCompare(scores[i], false))
                         {
                             if (VisionConstants.DEBUG_LEVEL >= 3)
-                                System.out.println("particle: " + i + "is a Horizontal Target centerX: " + rectangles[i].center_mass_x + "centerY: " + rectangles[i].center_mass_y);
+                                Logger.staticPrintln("particle: " + i + "is a Horizontal Target centerX: " + rectangles[i].center_mass_x + "centerY: " + rectangles[i].center_mass_y);
                             horizontalTargets[horizontalTargetCount++] = i; //Add particle to target array and increment count
                         } else if (VisionScoring.scoreCompare(scores[i], true)) {
                             if (VisionConstants.DEBUG_LEVEL >= 3)
-                                System.out.println("particle: " + i + "is a Vertical Target centerX: " + rectangles[i].center_mass_x + "centerY: " + rectangles[i].center_mass_y);
+                                Logger.staticPrintln("particle: " + i + "is a Vertical Target centerX: " + rectangles[i].center_mass_x + "centerY: " + rectangles[i].center_mass_y);
                             verticalTargets[verticalTargetCount++] = i;  //Add particle to target array and increment count
                         } else {
                             if (VisionConstants.DEBUG_LEVEL >= 3)
-                                System.out.println("particle: " + i + "is not a Target centerX: " + rectangles[i].center_mass_x + "centerY: " + rectangles[i].center_mass_y);
+                                Logger.staticPrintln("particle: " + i + "is not a Target centerX: " + rectangles[i].center_mass_x + "centerY: " + rectangles[i].center_mass_y);
                         }
                             if (VisionConstants.DEBUG_LEVEL >= 3)
-                                System.out.println("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
+                                Logger.staticPrintln("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
                             if (VisionConstants.DEBUG_LEVEL >= 3)
-                                System.out.println("ARVert: " + scores[i].aspectRatioVertical);	
+                                Logger.staticPrintln("ARVert: " + scores[i].aspectRatioVertical);	
                         }
                         //Zero out scores and set verticalIndex to first target in case there are no horizontal targets
                         target.totalScore = target.leftScore = target.rightScore = target.tapeWidthScore = target.verticalScore = 0;
@@ -162,12 +163,12 @@ public class VisionDistanceCalculations {
                                     if (VisionConstants.DEBUG_LEVEL >= 2) {
                                     if(target.Hot)
                                     {
-                                            System.out.println("Hot target located");
-                                            System.out.println("Distance: " + target.distance);
-                                            System.out.println("LeftHot?: " + target.leftHot);
+                                            Logger.staticPrintln("Hot target located");
+                                            Logger.staticPrintln("Distance: " + target.distance);
+                                            Logger.staticPrintln("LeftHot?: " + target.leftHot);
                                     } else {
-                                            System.out.println("No hot target present");
-                                            System.out.println("Distance: " + target.distance);
+                                            Logger.staticPrintln("No hot target present");
+                                            Logger.staticPrintln("Distance: " + target.distance);
                                     }
                                     }
                                     
@@ -175,8 +176,8 @@ public class VisionDistanceCalculations {
                                     vntc.setVisionDistance(target.distance);
                                     vntc.setVisionAngle(target.angle);
                                     if (VisionConstants.DEBUG_LEVEL >= 2) {
-                                        System.out.println("Angle: " + target.angle);
-                                        System.out.println("Lateral Distance: " + Math.tan(target.angle) * target.distance);
+                                        Logger.staticPrintln("Angle: " + target.angle);
+                                        Logger.staticPrintln("Lateral Distance: " + Math.tan(target.angle) * target.distance);
                                     }
                             }
                         
@@ -219,17 +220,17 @@ public class VisionDistanceCalculations {
                 scores[i].aspectRatioHorizontal = VisionScoring.scoreAspectRatio(filteredImage, report, i, false);			
                 //Check if the particle is a horizontal target, if not, check if it's a vertical target
                 if (VisionScoring.scoreCompare(scores[i], false)) {
-                    System.out.println("particle: " + i + "is a Horizontal Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+                    Logger.staticPrintln("particle: " + i + "is a Horizontal Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                     horizontalTargets[horizontalTargetCount++] = i; //Add particle to target array and increment count
                 } else if (VisionScoring.scoreCompare(scores[i], true)) {
-                    System.out.println("particle: " + i + "is a Vertical Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+                    Logger.staticPrintln("particle: " + i + "is a Vertical Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                     verticalTargets[verticalTargetCount++] = i;  //Add particle to target array and increment count
                 } else {
-                    System.out.println("particle: " + i + "is not a Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
+                    Logger.staticPrintln("particle: " + i + "is not a Target centerX: " + report.center_mass_x + "centerY: " + report.center_mass_y);
                 }
     
-                System.out.println("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
-                System.out.println("ARVert: " + scores[i].aspectRatioVertical);	
+                Logger.staticPrintln("rect: " + scores[i].rectangularity + "ARHoriz: " + scores[i].aspectRatioHorizontal);
+                Logger.staticPrintln("ARVert: " + scores[i].aspectRatioVertical);	
               }
               //Zero out scores and set verticalIndex to first target in case there are no horizontal targets
               target.totalScore = target.leftScore = target.rightScore = target.tapeWidthScore = target.verticalScore = 0;
@@ -274,11 +275,11 @@ public class VisionDistanceCalculations {
                 ParticleAnalysisReport distanceReport = filteredImage.getParticleAnalysisReport(target.verticalIndex);
                 distance = computeDistance(filteredImage, distanceReport, target.verticalIndex);
                 if(target.Hot) {
-                        System.out.println("Hot target located");
-                        System.out.println("Distance: " + distance);
+                        Logger.staticPrintln("Hot target located");
+                        Logger.staticPrintln("Distance: " + distance);
                 } else {
-                        System.out.println("No hot target present");
-                        System.out.println("Distance: " + distance);
+                        Logger.staticPrintln("No hot target present");
+                        Logger.staticPrintln("Distance: " + distance);
                 }
               }
             }

@@ -7,6 +7,7 @@ package org.team751.subsystems.drivetrain;
 
 import edu.wpi.first.wpilibj.command.PIDSubsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team751.PIDConstants;
 import org.team751.RobotMap;
 import org.team751.commands.CommandBase;
 
@@ -22,7 +23,7 @@ public class RightDriveTrainPID extends PIDSubsystem {
 
     // Initialize your subsystem here
     public RightDriveTrainPID() {
-        super("LeftDriveTrainPID", SmartDashboard.getNumber("\"P\" RightDriveTrainPID", Kp), SmartDashboard.getNumber("\"I\" RightDriveTrainPID", Ki), SmartDashboard.getNumber("\"D\" RightDriveTrainPID", Kd));
+        super("LeftDriveTrainPID", SmartDashboard.getNumber("\"P\" RightDriveTrainPID", PIDConstants.RIGHT_DRIVE_P), SmartDashboard.getNumber("\"I\" RightDriveTrainPID", PIDConstants.RIGHT_DRIVE_I), SmartDashboard.getNumber("\"D\" RightDriveTrainPID", PIDConstants.RIGHT_DRIVE_D));
 
         // Use these to get going:
         // setSetpoint() -  Sets where the PID controller should move the system

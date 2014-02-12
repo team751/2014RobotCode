@@ -5,38 +5,54 @@
  */
 package org.team751.commands.shooter;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.team751.commands.CommandBase;
+import org.team751.subsystems.Shooter;
 
 /**
  *
  * @author sambaumgarten
  */
-public class RetractShooter extends CommandBase {
+public class RetractShooter extends CommandGroup {
     
     public RetractShooter() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
-    }
+        if (CommandBase.shooter.state == Shooter.kStateInactive) {
+            // Set the state
+            CommandBase.shooter.state = Shooter.kStateRetracting;
+            
+            // Ensure the lock is released
+            addSequential(new UnlockShooter());
+            
+            // Engage the motor gear
+            addSequential(new EngageMotor());
+            
+            // Pullback the shooter
+            addSequential(new PullbackShooterMotor());
+            
+            // Lock the shooter in place
+            addSequential(new LockShooter());
+            
+            // Disengage the motor
+            addSequential(new DisengageMotor());
+            
+            // Set the state
+            CommandBase.shooter.state = Shooter.kStateRetracted;
+        }
+        
+        // Add Commands here:
+        // e.g. addSequential(new Command1());
+        //      addSequential(new Command2());
+        // these will run in order.
 
-    // Called just before this Command runs the first time
-    protected void initialize() {
-    }
-
-    // Called repeatedly when this Command is scheduled to run
-    protected void execute() {
-    }
-
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return false;
-    }
-
-    // Called once after isFinished returns true
-    protected void end() {
-    }
-
-    // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
-    protected void interrupted() {
+        // To run multiple commands at the same time,
+        // use addParallel()
+        // e.g. addParallel(new Command1());
+        //      addSequential(new Command2());
+        // Command1 and Command2 will run in parallel.
+        // A command group will require all of the subsystems that each member
+        // would require.
+        // e.g. if Command1 requires chassis, and Command2 requires arm,
+        // a CommandGroup containing them would require both the chassis and the
+        // arm.
     }
 }

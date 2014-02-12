@@ -5,7 +5,10 @@
  */
 package org.team751.subsystems;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Subsystem;
+import org.team751.RobotMap;
 
 /**
  *
@@ -20,11 +23,11 @@ public class Shooter extends Subsystem {
     public final static int kStateInactive = 2;
     
     public int state = Shooter.kStateInactive;
-
+    
+    public ShooterPullbackPID sppid = new ShooterPullbackPID();
+    
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
-    }
-    
-    
+    }   
 }

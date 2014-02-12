@@ -98,20 +98,20 @@ public class Navigator extends PeriodicTask implements Sendable,
         public MaxbotixUltrasonic ultrasonic = new MaxbotixUltrasonic(RobotMap.ultrasonicChannel);
 
 	public Navigator() {
-		System.out.println("Navigator constructor called");
+		Logger.staticPrintln("Navigator constructor called");
 
 
 
-		System.out.println("Starting gyro init");
+		Logger.staticPrintln("Starting gyro init");
 		SmartDashboard.putBoolean("Gyro init", true);
 		gyro = new Gyro(RobotMap.gyroChannel);
 		SmartDashboard.putBoolean("Gyro init", false);
-		System.out.println("Gyro init done");
+		Logger.staticPrintln("Gyro init done");
 
-		System.out.println("Starting encoder init");
+		Logger.staticPrintln("Starting encoder init");
 		leftEncoder = RobotMap.leftDriveEncoder;
 		rightEncoder = RobotMap.rightDriveEncoder;
-		System.out.println("Encoder init done");
+		Logger.staticPrintln("Encoder init done");
 
 		//Set the periodic task to run this 10 times/second
 		setTaskTime(0.1);

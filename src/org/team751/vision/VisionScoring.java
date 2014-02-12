@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.image.NIVision;
 import edu.wpi.first.wpilibj.image.NIVisionException;
 import edu.wpi.first.wpilibj.image.ParticleAnalysisReport;
 import edu.wpi.first.wpilibj.networktables2.type.NumberArray;
+import org.team751.utils.Logger;
 import org.team751.vision.utils.Rect;
 import org.team751.vision.utils.Scores;
 
@@ -111,12 +112,12 @@ public class VisionScoring {
             for (int i = 0; i < 8; i++) {
                 System.out.print(" " + rectangle.points[i]);
             }
-            System.out.println("");
+            Logger.staticPrintln("");
             System.out.print("x values: ");
             for (int i = 0; i < 4; i++) {
                 System.out.print(" " + rectangle.x[i]);
             }
-            System.out.println("");
+            Logger.staticPrintln("");
             System.out.print("y values: ");
             for (int i = 0; i < 4; i++) {
                 System.out.print(" " + rectangle.y[i]);
@@ -184,9 +185,9 @@ public class VisionScoring {
         idealAspectRatio = vertical ? (4.0/32) : (23.5/4);	//Vertical reflector 4" wide x 32" tall, horizontal 23.5" wide x 4" tall
 	
         if (VisionConstants.DEBUG_LEVEL >= 4)
-            System.out.println("width, height: " + rectangle.bbWidth + " " + rectangle.bbHeight);
+            Logger.staticPrintln("width, height: " + rectangle.bbWidth + " " + rectangle.bbHeight);
         if (VisionConstants.DEBUG_LEVEL >= 4)
-            System.out.println("long, short: " + rectangle.rectLong + " " + rectangle.rectShort);
+            Logger.staticPrintln("long, short: " + rectangle.rectLong + " " + rectangle.rectShort);
                         
         //Divide width by height to measure aspect ratio
         if(rectangle.bbWidth > rectangle.bbHeight) {

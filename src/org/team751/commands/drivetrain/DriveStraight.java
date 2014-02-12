@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.PIDConstants;
 import org.team751.commands.CommandBase;
+import org.team751.utils.Logger;
 
 /**
  * Drives the robot, using PID and the drivetrain encoders, forward or back a
@@ -35,7 +36,7 @@ public class DriveStraight extends CommandBase {
                 moveValue = output;
             }
 
-            System.out.println("Got move output " + output);
+            Logger.staticPrintln("Got move output " + output);
         }
     };
     private final PIDOutput rotateOutput = new PIDOutput() {
@@ -44,7 +45,7 @@ public class DriveStraight extends CommandBase {
                 rotateValue = output;
             }
 
-            System.out.println("Got rotate output " + output);
+            Logger.staticPrintln("Got rotate output " + output);
         }
     };
 
@@ -93,7 +94,7 @@ public class DriveStraight extends CommandBase {
     protected synchronized void execute() {
         driveTrain.arcadeDrive(moveValue, rotateValue);
 		
-	System.out.println("Position "+navigator.getEncoderDistance()+" target "+moveController.getSetpoint());
+	Logger.staticPrintln("Position "+navigator.getEncoderDistance()+" target "+moveController.getSetpoint());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -104,7 +105,7 @@ public class DriveStraight extends CommandBase {
 
     // Called once after isFinished returns true
     protected void end() {
-	System.out.println("DriveStraight done");
+	Logger.staticPrintln("DriveStraight done");
         //Disable and free the controllers
         moveController.disable();
         rotateController.disable();

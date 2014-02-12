@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.OI;
 import org.team751.RobotMap;
 import org.team751.subsystems.Drivetrain;
+import org.team751.subsystems.Shooter;
 import org.team751.utils.Navigator;
 
 /**
@@ -18,6 +19,7 @@ public abstract class CommandBase extends Command {
     public static OI oi;
     // Create a single static instance of all of your subsystems
     public static Drivetrain driveTrain = new Drivetrain();
+    public static Shooter shooter = new Shooter();
     //Periodic tasks here (these are not subsystems)
     public static Navigator navigator = new Navigator();
 
