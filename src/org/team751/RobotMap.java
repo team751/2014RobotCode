@@ -17,16 +17,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * floating around.
  */
 public class RobotMap {
-    // For example to map the left and right motors, you could define the
-    // following variables to use with your drivetrain subsystem.
-    // public static final int leftMotor = 1;
-    // public static final int rightMotor = 2;
-    
-    // If you are using multiple modules, make sure to define both the port
-    // number and the module. For example you with a rangefinder:
-    // public static final int rangefinderPort = 1;
-    // public static final int rangefinderModule = 1;
-    
     // Connections
     
     // MOTORS
@@ -51,31 +41,39 @@ public class RobotMap {
     
     // ENCODERS
     /**
-     * The digital input the left drivetrain encoder A is attached to
+     * The digital input for the left drivetrain encoder A is attached to
      */
     public static final int leftDriveEncoderChannelA = 1;
     /**
-     * The digital input the left drivetrain encoder B is attached to
+     * The digital input for the left drivetrain encoder B is attached to
      */
     public static final int leftDriveEncoderChannelB = 2;
     /**
-     * The digital input the right drivetrain encoder A is attached to
+     * The digital input for the right drivetrain encoder A is attached to
      */
     public static final int rightDriveEncoderChannelA = 3;
     /**
-     * The digital input the right drivetrain encoder B is attached to
+     * The digital input for the right drivetrain encoder B is attached to
      */
     public static final int rightDriveEncoderChannelB = 4;
+    /**
+     * The digital input for the shooter pullback encoder A is attached to
+     */
+    public static final int shooterPullbackEncoderChannelA = 5;
+    /**
+     * The digital input for the shooter pullback encoder A is attached to
+     */
+    public static final int shooterPullbackEncoderChannelB = 6;
     
     // LIMIT SWITCHES
-    public static final int moverEngagedLimitSwitchChannel = 5;
-    public static final int moverDisengagedLimitSwitchChannel = 6;
+    public static final int moverEngagedLimitSwitchChannel = 7;
+    public static final int moverDisengagedLimitSwitchChannel = 8;
     
     // PNEUMATICS
     /**
      * The port the pressure switch is on
      */
-    public static final int pressureSwitchInput = 2;
+    public static final int pressureSwitchInput = 11;
     /**
      * This is the port the mover solenoid is on (for forward)
      */
@@ -87,21 +85,21 @@ public class RobotMap {
     /**
      * This is the port the lock solenoid is on (for forward)
      */
-    public static final int lockSolenoidForwardChannel = 1;
+    public static final int lockSolenoidForwardChannel = 3;
     /**
      * This is the port the lock solenoid is on (for reverse)
      */
-    public static final int lockSolenoidReverseChannel = 2;
+    public static final int lockSolenoidReverseChannel = 4;
     
     // NAVIGATION
     /**
      * The digital inputs the gyro is attached to
      */
-    public static final int gyroChannel = 1;
+//    public static final int gyroChannel = 2;
     /**
      * The analog input the ultrasonic sensor is attached to
      */
-    public static final int ultrasonicChannel = 1;
+//    public static final int ultrasonicChannel = 3;
     
     
     // Speed Controllers
@@ -118,6 +116,7 @@ public class RobotMap {
     // Encoders
     public static final Encoder leftDriveEncoder = new Encoder(RobotMap.leftDriveEncoderChannelA, RobotMap.leftDriveEncoderChannelB);
     public static final Encoder rightDriveEncoder = new Encoder(RobotMap.rightDriveEncoderChannelA, RobotMap.rightDriveEncoderChannelB);
+    public static final Encoder shooterPullbackEncoder = new Encoder(RobotMap.shooterPullbackEncoderChannelA, RobotMap.shooterPullbackEncoderChannelB);
     
     // Limit Switches
     public static final DigitalInput moverEngagedLimitSwitch = new DigitalInput(RobotMap.moverEngagedLimitSwitchChannel);

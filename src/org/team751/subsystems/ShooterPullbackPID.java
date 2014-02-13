@@ -15,11 +15,6 @@ import org.team751.RobotMap;
  * @author sambaumgarten
  */
 public class ShooterPullbackPID extends PIDSubsystem {
-
-    private static final double Kp = 0.0;
-    private static final double Ki = 0.0;
-    private static final double Kd = 0.0;
-
     // Initialize your subsystem here
     public ShooterPullbackPID() {
         super("ShooterPullbackPID", SmartDashboard.getNumber("\"P\" ShooterPullbackPID", PIDConstants.SHOOTER_P), SmartDashboard.getNumber("\"I\" ShooterPullbackPID", PIDConstants.SHOOTER_I), SmartDashboard.getNumber("\"D\" ShooterPullbackPID", PIDConstants.SHOOTER_D));
@@ -39,7 +34,7 @@ public class ShooterPullbackPID extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-        return 0.0;
+        return RobotMap.shooterPullbackEncoder.getRate();
     }
     
     protected void usePIDOutput(double output) {

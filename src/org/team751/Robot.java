@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.commands.Autonomous;
 import org.team751.commands.CommandBase;
 import org.team751.utils.Diagnostic;
+import org.team751.utils.Logger;
 import org.team751.vision.utils.TargetReport;
 
 /**
@@ -74,6 +75,7 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         autonomousCommand.cancel();
+
     }
 
     /**
@@ -81,6 +83,7 @@ public class Robot extends IterativeRobot {
      */
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+        Logger.staticPrintln("LDE" + RobotMap.leftDriveEncoder.getRaw(), Logger.ANSI_PURPLE);
     }
     
     /**
@@ -88,5 +91,9 @@ public class Robot extends IterativeRobot {
      */
     public void testPeriodic() {
         LiveWindow.run();
+    }
+    
+    public void disabledInit() {
+        
     }
 }

@@ -95,7 +95,7 @@ public class Navigator extends PeriodicTask implements Sendable,
 	/** Rotational acceleration, degrees/second squared */
 	private double rotationalAcceleration = 0;
         
-        public MaxbotixUltrasonic ultrasonic = new MaxbotixUltrasonic(RobotMap.ultrasonicChannel);
+//        public MaxbotixUltrasonic ultrasonic = new MaxbotixUltrasonic(RobotMap.ultrasonicChannel);
 
 	public Navigator() {
 		Logger.staticPrintln("Navigator constructor called");
@@ -104,7 +104,7 @@ public class Navigator extends PeriodicTask implements Sendable,
 
 		Logger.staticPrintln("Starting gyro init");
 		SmartDashboard.putBoolean("Gyro init", true);
-		gyro = new Gyro(RobotMap.gyroChannel);
+//		gyro = new Gyro(RobotMap.gyroChannel);
 		SmartDashboard.putBoolean("Gyro init", false);
 		Logger.staticPrintln("Gyro init done");
 
@@ -308,9 +308,9 @@ public class Navigator extends PeriodicTask implements Sendable,
 		DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser6,
 											   1, "Initializing gyro");
 		DriverStationLCD.getInstance().updateLCD();
-		gyro.free();
-		gyro = null;
-		gyro = new Gyro(RobotMap.gyroChannel);
+//		gyro.free();
+//		gyro = null;
+//		gyro = new Gyro(RobotMap.gyroChannel);
 		SmartDashboard.putBoolean("Gyro init", false);
 		DriverStationLCD.getInstance().println(DriverStationLCD.Line.kUser6,
 											   1, "Gyro done");
@@ -333,7 +333,8 @@ public class Navigator extends PeriodicTask implements Sendable,
 
 		public double pidGet() {
 			synchronized (Navigator.this) {
-				return ultrasonic.GetRangeInInches();
+//				return ultrasonic.GetRangeInInches();
+                            return 0;
 			}
 		}
 	};

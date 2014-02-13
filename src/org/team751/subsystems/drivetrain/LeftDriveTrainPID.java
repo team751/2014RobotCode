@@ -35,7 +35,7 @@ public class LeftDriveTrainPID extends PIDSubsystem {
         // Return your input value for the PID loop
         // e.g. a sensor, like a potentiometer:
         // yourPot.getAverageVoltage() / kYourMaxVoltage;
-        return RobotMap.leftDriveEncoder.getRaw();
+        return RobotMap.leftDriveEncoder.getRate();
     }
     
     protected void usePIDOutput(double output) {

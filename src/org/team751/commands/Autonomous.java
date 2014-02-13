@@ -83,9 +83,12 @@ public class Autonomous extends CommandBase {
             
         }
         
-        RobotMap.leftDriveEncoder.start();
-        SmartDashboard.putNumber("LDE", RobotMap.leftDriveEncoder.getDistance());
-                
+
+//        SmartDashboard.putNumber("LDE", RobotMap.leftDriveEncoder.getDirection());
+        if (1 == 1) {
+            return;
+        }
+        
         double distanceToGoal = VisionDistanceCalculations.getDistanceToGoal(VisionDistanceCalculations.RoboRealmVision);
         double angleToGoal = VisionAngleCalculations.getAngleToGoal(Robot.lastTarget);
         

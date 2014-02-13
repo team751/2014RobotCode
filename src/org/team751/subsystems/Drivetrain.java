@@ -47,15 +47,9 @@ public class Drivetrain extends Subsystem {
     private final CheesyDrive cheeseDrive = new CheesyDrive();
 
     public Drivetrain() {
-        if (SmartDashboard.getBoolean("CAN Enabled", true)) {
-            drive = new PolyMotorRobotDrive(new SpeedController[]{RobotMap.leftDrivetrain1CANJaguar, RobotMap.leftDrivetrain2CANJaguar, RobotMap.leftDrivetrain3CANJaguar}, new SpeedController[]{RobotMap.rightDrivetrain1CANJaguar, RobotMap.rightDrivetrain2CANJaguar, RobotMap.rightDrivetrain3CANJaguar});
-            ldtpid = new LeftDriveTrainPID();
-            rdtpid = new RightDriveTrainPID();
-        } else {
-            drive = new PolyMotorRobotDrive(new SpeedController[]{leftDriveJaguar}, new SpeedController[]{rightDriveJaguar});
-            ldtpid = new LeftDriveTrainPID();
-            rdtpid = new RightDriveTrainPID();
-        }
+        drive = new PolyMotorRobotDrive(new SpeedController[]{leftDriveJaguar}, new SpeedController[]{rightDriveJaguar});
+        ldtpid = new LeftDriveTrainPID();
+        rdtpid = new RightDriveTrainPID();
         
         if (SmartDashboard.getBoolean("DriveTrainPID Enabled", false)) {
             ldtpid.enable();
@@ -130,15 +124,7 @@ public class Drivetrain extends Subsystem {
      * @return double speed
      */
     public double getLeftSpeed() {
-        if (SmartDashboard.getBoolean("CAN Enabled", true)) {
-            try {
-                return (RobotMap.leftDrivetrain1CANJaguar.getSpeed() + RobotMap.leftDrivetrain2CANJaguar.getSpeed() + RobotMap.leftDrivetrain3CANJaguar.getSpeed()) / 3;
-            } catch (CANTimeoutException e) {
-                return 0;
-            }
-        } else {
             return leftDriveJaguar.getSpeed();
-        }
     }
 
     /**
@@ -147,15 +133,7 @@ public class Drivetrain extends Subsystem {
      * @return speed
      */
     public double getRightSpeed() {
-        if (SmartDashboard.getBoolean("CAN Enabled", true)) {
-            try {
-                return (RobotMap.rightDrivetrain1CANJaguar.getSpeed() + RobotMap.rightDrivetrain2CANJaguar.getSpeed() + RobotMap.rightDrivetrain3CANJaguar.getSpeed()) / 3;
-            } catch (CANTimeoutException e) {
-                return 0;
-            }
-        } else {
             return rightDriveJaguar.getSpeed();
-        }
     }
 
     /**
@@ -182,21 +160,7 @@ public class Drivetrain extends Subsystem {
      * @param speed
      */
     public void setLeftSpeed(double speed) {
-        if (!SmartDashboard.getBoolean("DriveTrainPID Enabled", false)) {
-            ldtpid.disable();
-            rdtpid.disable();
-        }
-        if (SmartDashboard.getBoolean("CAN Enabled", true)) {
-            try {
-                RobotMap.leftDrivetrain1CANJaguar.setX(speed);
-                RobotMap.leftDrivetrain2CANJaguar.setX(speed);
-                RobotMap.leftDrivetrain3CANJaguar.setX(speed);
-            } catch (CANTimeoutException e) {
-                
-            }
-        } else {
             leftDriveJaguar.set(speed);
-        }
     }
 
     /**
@@ -205,17 +169,7 @@ public class Drivetrain extends Subsystem {
      * @param speed
      */
     public void setRightSpeed(double speed) {
-        if (SmartDashboard.getBoolean("CAN Enabled", true)) {
-            try {
-                RobotMap.rightDrivetrain1CANJaguar.setX(speed);
-                RobotMap.rightDrivetrain2CANJaguar.setX(speed);
-                RobotMap.rightDrivetrain3CANJaguar.setX(speed);
-            } catch (CANTimeoutException e) {
-                
-            }
-        } else {
             rightDriveJaguar.set(speed);
-        }
     }
 
     /**
