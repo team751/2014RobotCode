@@ -19,6 +19,7 @@ import org.team751.utils.PolyMotorRobotDrive;
 import org.team751.cheesy.CheesyDrive;
 import org.team751.subsystems.drivetrain.LeftDriveTrainPID;
 import org.team751.subsystems.drivetrain.RightDriveTrainPID;
+import org.team751.utils.Logger;
 
 /**
  *
@@ -40,6 +41,8 @@ public class Drivetrain extends Subsystem {
 
     public final double leftDriveSpeed = 0;
     public final double rightDriveSpeed = 0;
+    
+    private final boolean useCAN = false;
 
     /**
      * Keeps track of Cheesy Drive data
@@ -47,14 +50,21 @@ public class Drivetrain extends Subsystem {
     private final CheesyDrive cheeseDrive = new CheesyDrive();
 
     public Drivetrain() {
-        drive = new PolyMotorRobotDrive(new SpeedController[]{leftDriveJaguar}, new SpeedController[]{rightDriveJaguar});
+        if (useCAN) {
+            drive = new PolyMotorRobotDrive(new SpeedController[]{RobotMap.leftDrivetrain1CANJaguar, RobotMap.leftDrivetrain2CANJaguar, RobotMap.leftDrivetrain3CANJaguar}, new SpeedController[]{RobotMap.rightDrivetrain1CANJaguar, RobotMap.rightDrivetrain2CANJaguar, RobotMap.rightDrivetrain3CANJaguar}); // CAN
+        } else {
+            drive = new PolyMotorRobotDrive(new SpeedController[]{leftDriveJaguar}, new SpeedController[]{rightDriveJaguar}); // PWM
+        }
+        
         ldtpid = new LeftDriveTrainPID();
         rdtpid = new RightDriveTrainPID();
         
-        if (SmartDashboard.getBoolean("DriveTrainPID Enabled", false)) {
-            ldtpid.enable();
-            rdtpid.enable();
-        }
+//        if (SmartDashboard.getBoolean("DriveTrainPID Enabled", false)) {
+//            ldtpid.enable();
+//            rdtpid.enable();
+//        }
+            
+            
     }
 
     public void initDefaultCommand() {
@@ -105,7 +115,13 @@ public class Drivetrain extends Subsystem {
     public void cheesyDrive(double throttle, double wheel, boolean quickTurn) {
         CheesyDrive.MotorOutputs outputs = cheeseDrive.cheesyDrive(throttle, wheel, quickTurn);
         //Invert the right motor output so that it will work
-        drive.setLeftRightMotorOutputs(outputs.left, -outputs.right);
+        
+        if (outputs.right > 0) {
+            drive.setLeftRightMotorOutputs(outputs.left, -outputs.right*.867);
+        } else {
+            drive.setLeftRightMotorOutputs(outputs.left, -outputs.right);
+        }
+        
     }
 
     /**
@@ -124,7 +140,11 @@ public class Drivetrain extends Subsystem {
      * @return double speed
      */
     public double getLeftSpeed() {
+        if (useCAN) {
+            return 0;
+        } else {
             return leftDriveJaguar.getSpeed();
+        }
     }
 
     /**
@@ -133,7 +153,11 @@ public class Drivetrain extends Subsystem {
      * @return speed
      */
     public double getRightSpeed() {
-            return rightDriveJaguar.getSpeed();
+        if (useCAN) {
+            return 0;
+        } else {
+            return leftDriveJaguar.getSpeed();
+        }
     }
 
     /**

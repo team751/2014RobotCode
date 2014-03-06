@@ -3,40 +3,52 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.team751.commands.shooter;
+package org.team751.commands.nommer;
 
+import org.team751.RobotMap;
 import org.team751.commands.CommandBase;
-import org.team751.subsystems.Shooter;
 
 /**
  *
  * @author sambaumgarten
  */
-public class CancelPullback extends CommandBase {
+public class AutoLift extends CommandBase {
     
-    public CancelPullback() {
+    double firstTriggerTime = -1;
+    boolean firstSensorTriggered = false;
+    
+    double timeBetweenSensors = -1;
+    double velocity = -1;
+    
+    public AutoLift() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        CommandBase.shooter.sppid.disable();
-        double position = CommandBase.shooter.sppid.getPosition();
-        if (position > 0) {
-            CommandBase.shooter.state = Shooter.kStateRetracted;
-        } else {
-            CommandBase.shooter.state = Shooter.kStateInactive;
-        }
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+//        if (firstSensorTriggered && RobotMap.firstNommerSwitch.get() && !RobotMap.secondNommerSwitch.get()) {
+//            firstSensorTriggered = false;
+//            firstTriggerTime = -1;
+//            timeBetweenSensors = -1;
+//            velocity = -1;
+//        }
+//        if (RobotMap.secondNommerSwitch.get() && firstSensorTriggered) {
+//            timeBetweenSensors = System.currentTimeMillis() - firstTriggerTime;
+//        }
+//        if (RobotMap.firstNommerSwitch.get()) {
+//            firstSensorTriggered = true;
+//            firstTriggerTime = System.currentTimeMillis();
+//        }
     }
- 
+
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

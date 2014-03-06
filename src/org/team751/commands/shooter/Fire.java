@@ -16,8 +16,7 @@ import org.team751.subsystems.Shooter;
 public class Fire extends CommandGroup {
     
     public Fire() {
-        
-        addSequential(new CancelPullback());
+        CommandBase.shooter.state = Shooter.kStateRetracted;
         addSequential(new UnlockShooter());
         
         CommandBase.shooter.state = Shooter.kStateInactive;

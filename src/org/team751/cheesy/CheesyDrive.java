@@ -1,5 +1,8 @@
 package org.team751.cheesy;
 
+import org.team751.RobotMap;
+import org.team751.utils.Logger;
+
 /**
  * Calculates values for drivetrain control. Ported from team 254's C++
  * implementation in their 2012 code.
@@ -155,8 +158,18 @@ public class CheesyDrive {
             left_pwm += overPower * (-1.0 - right_pwm);
             right_pwm = -1.0;
         }
-
+        double ldedistance = RobotMap.leftDriveEncoder.getDistance();
+        double rdedistance = RobotMap.rightDriveEncoder.getDistance();
+        
         return new MotorOutputs(left_pwm, right_pwm);
+        
+//        if (ldedistance > rdedistance) {
+//            return new MotorOutputs(left_pwm*(rdedistance/ldedistance), right_pwm);
+//        } else {
+//            return new MotorOutputs(left_pwm, right_pwm*(ldedistance/rdedistance));
+//        }
+        
+        
     }
 
     /**

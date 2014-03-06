@@ -49,7 +49,7 @@ public class PIDConstants {
     /**
      * PID constant for the left encoder
      */
-     public static final double LEFT_DRIVE_P = 0.08;
+     public static final double LEFT_DRIVE_P = .08;
     /**
      * PID constant for the left encoder
      */
@@ -75,7 +75,7 @@ public class PIDConstants {
     /**
      * PID constant for the shooter encoder
      */
-     public static final double SHOOTER_P = 0.08;
+     public static final double SHOOTER_P = 0;
     /**
      * PID constant for the shooter encoder
      */
@@ -83,7 +83,7 @@ public class PIDConstants {
     /**
      * PID constant for the shooter encoder
      */
-    public static final double SHOOTER_D = 0.1;
+    public static final double SHOOTER_D = 0;
     
     //prevent the class from being instantiated
     private PIDConstants() {}

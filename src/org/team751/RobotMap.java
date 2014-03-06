@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.Jaguar;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.can.CANTimeoutException;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -23,7 +22,7 @@ public class RobotMap {
     /**
      * The PWM connector the left drivetrain motors are attached to
      */
-    public static final int leftDrivePWM = 1;
+    public static final int leftDrivePWM = 6;
     /**
      * The PWM connector the right drivetrain motors are attached to
      */
@@ -32,6 +31,12 @@ public class RobotMap {
      * The PWM connector the shooter pullback motors are attached to
      */
     public static final int shooterPullbackPWM = 3;
+    /**
+     * The PWM connector the shooter pullback motors are attached to
+     */
+    public static final int nommerLeftPWM = 4;
+    public static final int nommerRightPWM = 5;
+    
     
     // RELAYS
     /**
@@ -64,10 +69,22 @@ public class RobotMap {
      * The digital input for the shooter pullback encoder A is attached to
      */
     public static final int shooterPullbackEncoderChannelB = 6;
+    /**
+     * The digital input for the shooter pullback encoder A is attached to
+     */
+    public static final int nommerEncoderChannelA = 7;
+    /**
+     * The digital input for the shooter pullback encoder A is attached to
+     */
+    public static final int nommerEncoderChannelB = 8;
     
     // LIMIT SWITCHES
-    public static final int moverEngagedLimitSwitchChannel = 7;
-    public static final int moverDisengagedLimitSwitchChannel = 8;
+    public static final int moverEngagedLimitSwitchChannel = 9;
+    public static final int moverDisengagedLimitSwitchChannel = 10;
+    
+    // Broken-Beam Sensors
+//    public static final int firstNommerSwitchChannel = 13;
+//    public static final int secondNommerSwitchChannel = 14;
     
     // PNEUMATICS
     /**
@@ -106,6 +123,9 @@ public class RobotMap {
     public static final Jaguar leftDrivetrainJaguar = new Jaguar(RobotMap.leftDrivePWM);
     public static final Jaguar rightDrivetrainJaguar = new Jaguar(RobotMap.rightDrivePWM);
     public static final Jaguar shooterPullbackJaguar = new Jaguar(RobotMap.shooterPullbackPWM);
+    public static final Jaguar nommerLeftJaguar = new Jaguar(RobotMap.nommerLeftPWM);
+    public static final Jaguar nommerRightJaguar = new Jaguar(RobotMap.nommerRightPWM);
+    
     public static CANJaguar leftDrivetrain1CANJaguar;
     public static CANJaguar leftDrivetrain2CANJaguar;
     public static CANJaguar leftDrivetrain3CANJaguar;
@@ -117,13 +137,18 @@ public class RobotMap {
     public static final Encoder leftDriveEncoder = new Encoder(RobotMap.leftDriveEncoderChannelA, RobotMap.leftDriveEncoderChannelB);
     public static final Encoder rightDriveEncoder = new Encoder(RobotMap.rightDriveEncoderChannelA, RobotMap.rightDriveEncoderChannelB);
     public static final Encoder shooterPullbackEncoder = new Encoder(RobotMap.shooterPullbackEncoderChannelA, RobotMap.shooterPullbackEncoderChannelB);
+    public static final Encoder nommerEncoder = new Encoder(RobotMap.nommerEncoderChannelA, RobotMap.nommerEncoderChannelB);
     
     // Limit Switches
     public static final DigitalInput moverEngagedLimitSwitch = new DigitalInput(RobotMap.moverEngagedLimitSwitchChannel);
     public static final DigitalInput moverDisengagedLimitSwitch = new DigitalInput(RobotMap.moverDisengagedLimitSwitchChannel);
     
+    // Broken-Beam
+//    public static final DigitalInput firstNommerSwitch = new DigitalInput(RobotMap.firstNommerSwitchChannel);
+//    public static final DigitalInput secondNommerSwitch = new DigitalInput(RobotMap.firstNommerSwitchChannel);
+    
     // Pneumatics
-    public static final Compressor compressor = new Compressor(pressureSwitchInput, compressorRelay);
+    public static final Compressor compressor = new Compressor(1,RobotMap.pressureSwitchInput,1,RobotMap.compressorRelay);
     public static final DoubleSolenoid moverSolenoid = new DoubleSolenoid(RobotMap.moverSolenoidForwardChannel, RobotMap.moverSolenoidReverseChannel);
     public static final DoubleSolenoid lockSolenoid = new DoubleSolenoid(RobotMap.lockSolenoidForwardChannel, RobotMap.lockSolenoidReverseChannel);
 
@@ -141,7 +166,7 @@ public class RobotMap {
                     leftDrivetrain3CANJaguar = new CANJaguar(4);
                 
                 if (rightDrivetrain1CANJaguar == null)
-                    rightDrivetrain1CANJaguar = new CANJaguar(5);
+                    rightDrivetrain1CANJaguar = new CANJaguar(5); 
                 
                 if (rightDrivetrain2CANJaguar == null)
                     rightDrivetrain2CANJaguar = new CANJaguar(6);

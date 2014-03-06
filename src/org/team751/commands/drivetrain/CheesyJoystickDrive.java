@@ -1,5 +1,7 @@
 package org.team751.commands.drivetrain;
 
+import edu.wpi.first.wpilibj.Relay;
+import org.team751.RobotMap;
 import org.team751.commands.CommandBase;
 
 /**
@@ -17,6 +19,10 @@ public class CheesyJoystickDrive extends CommandBase {
     }
 
     protected void execute() {
+        RobotMap.compressor.start();
+        
+        
+        
         double x = oi.driverJoystick.getX();
         double y = oi.driverJoystick.getY();
         

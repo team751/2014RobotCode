@@ -5,6 +5,7 @@
  */
 package org.team751.commands;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.Robot;
@@ -75,18 +76,12 @@ public class Autonomous extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double autonomousMode = SmartDashboard.getNumber("autonomousMode");
+        double autonomousMode = SmartDashboard.getNumber("autonomousMode", 0);
         
         SmartDashboard.putBoolean("fired", FIRED);
         
         if (autonomousMode == 1) {
-            
-        }
-        
-
-//        SmartDashboard.putNumber("LDE", RobotMap.leftDriveEncoder.getDirection());
-        if (1 == 1) {
-            return;
+//            gyroAutonomous();
         }
         
         double distanceToGoal = VisionDistanceCalculations.getDistanceToGoal(VisionDistanceCalculations.RoboRealmVision);

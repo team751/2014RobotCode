@@ -23,9 +23,7 @@ public class Shooter extends Subsystem {
     public final static int kStateInactive = 2;
     
     public int state = Shooter.kStateInactive;
-    
-    public ShooterPullbackPID sppid = new ShooterPullbackPID();
-    
+        
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());

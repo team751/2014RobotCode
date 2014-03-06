@@ -3,8 +3,8 @@ package org.team751.commands;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.OI;
-import org.team751.RobotMap;
 import org.team751.subsystems.Drivetrain;
+import org.team751.subsystems.Nommer;
 import org.team751.subsystems.Shooter;
 import org.team751.utils.Navigator;
 
@@ -20,6 +20,7 @@ public abstract class CommandBase extends Command {
     // Create a single static instance of all of your subsystems
     public static Drivetrain driveTrain = new Drivetrain();
     public static Shooter shooter = new Shooter();
+    public static Nommer nommer = new Nommer();
     //Periodic tasks here (these are not subsystems)
     public static Navigator navigator = new Navigator();
 
@@ -31,13 +32,13 @@ public abstract class CommandBase extends Command {
         // news. Don't move it.
         oi = new OI();
         
-        RobotMap.leftDriveEncoder.start();
-        RobotMap.rightDriveEncoder.start();
-        RobotMap.leftDriveEncoder.setDistancePerPulse(.000623);
-        RobotMap.rightDriveEncoder.setDistancePerPulse(.000623);
+//        RobotMap.leftDriveEncoder.setDistancePerPulse(((6.75/2)*Math.PI*2)/1429.0);
+//        RobotMap.rightDriveEncoder.setDistancePerPulse(((6.75/2)*Math.PI*2)/1429.0);
 
         // Show what command your subsystem is running on the SmartDashboard
         SmartDashboard.putData(driveTrain);
+        
+//        navigator.start();
     }
 
     public CommandBase(String name) {

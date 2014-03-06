@@ -6,6 +6,8 @@
 package org.team751.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.team751.RobotMap;
 
 /**
  *
@@ -18,5 +20,26 @@ public class Nommer extends Subsystem {
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
         //setDefaultCommand(new MySpecialCommand());
+    }
+    
+    public double getLoweredValue() {
+        return SmartDashboard.getNumber("nommerLoweredValue");
+    }
+    
+    public double getRaisedValue() {
+        return SmartDashboard.getNumber("nommerRaisedValue");
+    }
+    
+    public double getGameStartValue() {
+        return SmartDashboard.getNumber("nommerGameStartValue");
+    }
+    
+    public double getNommerSpeed() {
+        return SmartDashboard.getNumber("nommerSpeed");
+    }
+    
+    public void setSpeed(double speed) {
+        RobotMap.nommerLeftJaguar.set(speed);
+        RobotMap.nommerRightJaguar.set(speed);
     }
 }

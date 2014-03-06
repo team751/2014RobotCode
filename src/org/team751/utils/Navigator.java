@@ -29,7 +29,7 @@ public class Navigator extends PeriodicTask implements Sendable,
 	/**
 	 * The diameter of the wheel, in meters
 	 */
-	private static final double WHEEL_DIAMETER = 0.1524;
+	private static final double WHEEL_DIAMETER = 0.17145;
 
 	/**
 	 * The distance, in meters, that the robot moves for each encoder count
@@ -37,7 +37,7 @@ public class Navigator extends PeriodicTask implements Sendable,
 	private static final double ROBOT_DISTANCE_PER_COUNT = (1 / (double) COUNTS_PER_REVOLUTION) * WHEEL_DIAMETER * Math.PI;
 //	private ADXL345_I2C accel;
 
-	private Gyro gyro;
+//	private Gyro gyro;
 	//encoders
 
 	Encoder leftEncoder;
@@ -119,12 +119,16 @@ public class Navigator extends PeriodicTask implements Sendable,
 		//Configure encoders
 		leftEncoder.setDistancePerPulse(ROBOT_DISTANCE_PER_COUNT);
 		rightEncoder.setDistancePerPulse(ROBOT_DISTANCE_PER_COUNT);
+                RobotMap.shooterPullbackEncoder.setDistancePerPulse(.1);
+//                RobotMap.nommerEncoder.setDistancePerPulse(.1);
 		//Reverse the right side encoder so that forward will give a positive value for both encoders
 		leftEncoder.setReverseDirection(true);
 
 		//Start counting encoder pulses
 		leftEncoder.start();
 		rightEncoder.start();
+                RobotMap.shooterPullbackEncoder.start();         
+//                RobotMap.nommerEncoder.start();
 	}
 
 	/**
@@ -137,8 +141,6 @@ public class Navigator extends PeriodicTask implements Sendable,
 	}
 
 	public void run() {
-		synchronized (this) {
-
 			long newTime = System.currentTimeMillis();
 			//Get the time in seconds since processing was last done
 			double timeSeconds = (newTime - lastProcessingTime) / 1000.0;
@@ -150,7 +152,7 @@ public class Navigator extends PeriodicTask implements Sendable,
 //			double accelY = accel.getAcceleration(ADXL345_I2C.Axes.kY) / 9.8;
 
 			//update the heading
-			heading = gyro.getAngle();
+//			heading = gyro.getAngle();
 //
 //			//Append the velocity with the change in velocity over the last time step
 //			//90 degrees is added to the heading because Navigator uses forward for 0
@@ -173,6 +175,7 @@ public class Navigator extends PeriodicTask implements Sendable,
 
 			//Differentiate to get the speeds/velocities
 			linearVelocity = linearVelocityDiff.getDerivative(encoderDistance);
+                        
 			linearAcceleration = linearAccelerationDiff.getDerivative(
 					linearVelocity);
 			rotationalVelocity = rotationalVelocityDiff.getDerivative(
@@ -195,8 +198,6 @@ public class Navigator extends PeriodicTask implements Sendable,
 			if (DriverStation.getInstance().isOperatorControl()) {
 				SmartDashboard.putNumber("Heading", dashboardHeading);
 			}
-		}
-
 	}
 
 	//Methods to access location information

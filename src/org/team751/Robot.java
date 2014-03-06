@@ -9,12 +9,14 @@ package org.team751;
 
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Relay;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.commands.Autonomous;
 import org.team751.commands.CommandBase;
+import org.team751.commands.calibration.CalibrateShooter;
 import org.team751.utils.Diagnostic;
 import org.team751.utils.Logger;
 import org.team751.vision.utils.TargetReport;
@@ -29,6 +31,8 @@ import org.team751.vision.utils.TargetReport;
 public class Robot extends IterativeRobot {
     Command autonomousCommand;
     public static TargetReport lastTarget;
+    
+//    Relay relay = new Relay(1,3);
 
     /**
      * This function is run when the robot is first started up and should be
@@ -43,9 +47,12 @@ public class Robot extends IterativeRobot {
         lastTarget = new TargetReport();
         
         SmartDashboard.putNumber("autonomousMode", 0);
+        
+        SmartDashboard.putData("Calibrate Shooter", new CalibrateShooter());
 
         // Start compressor
-        RobotMap.compressor.start();
+//        RobotMap.compressor.setRelayValue(Relay.Value.kForward);
+        
 
         // Initialize all subsystems
         CommandBase.init();
@@ -64,6 +71,8 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+        
+        CommandBase.navigator.run();
     }
 
     /**
@@ -75,6 +84,9 @@ public class Robot extends IterativeRobot {
         // continue until interrupted by another command, remove
         // this line or comment it out.
         autonomousCommand.cancel();
+        
+//        relay.set(Relay.Value.kOn);
+        RobotMap.compressor.start();
 
     }
 
@@ -82,8 +94,8 @@ public class Robot extends IterativeRobot {
      * This function is called periodically during operator control
      */
     public void teleopPeriodic() {
+        CommandBase.navigator.run();
         Scheduler.getInstance().run();
-        Logger.staticPrintln("LDE" + RobotMap.leftDriveEncoder.getRaw(), Logger.ANSI_PURPLE);
     }
     
     /**
@@ -95,5 +107,9 @@ public class Robot extends IterativeRobot {
     
     public void disabledInit() {
         
+    }
+    
+    public void disabledPeriodic() {
+        CommandBase.navigator.run();
     }
 }

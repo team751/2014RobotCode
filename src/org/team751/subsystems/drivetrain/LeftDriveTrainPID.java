@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.PIDConstants;
 import org.team751.RobotMap;
 import org.team751.commands.CommandBase;
+import org.team751.utils.Logger;
 
 /**
  *
@@ -42,5 +43,6 @@ public class LeftDriveTrainPID extends PIDSubsystem {
         // Use output to drive your system, like a motor
         // e.g. yourMotor.set(output);
         CommandBase.driveTrain.setLeftSpeed(output);
+        Logger.staticPrintln("ENCODER: " + output);
     }
 }

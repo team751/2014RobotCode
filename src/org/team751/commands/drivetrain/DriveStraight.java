@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.PIDController;
 import edu.wpi.first.wpilibj.PIDOutput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.PIDConstants;
+import org.team751.Robot;
 import org.team751.commands.CommandBase;
 import org.team751.utils.Logger;
 
@@ -60,6 +61,8 @@ public class DriveStraight extends CommandBase {
 
         this.distance = meters;
 
+//        moveController = null;
+//        rotateController = null;
         moveController = new PIDController(PIDConstants.DRIVE_MOVE_P, PIDConstants.DRIVE_MOVE_I, PIDConstants.DRIVE_MOVE_D, navigator.movementPidSource, moveOutput);
         rotateController = new PIDController(PIDConstants.DRIVE_ROTATE_P, PIDConstants.DRIVE_ROTATE_I, PIDConstants.DRIVE_ROTATE_D, navigator.headingPidSource, rotateOutput);
 
@@ -68,19 +71,19 @@ public class DriveStraight extends CommandBase {
 
         //Configure on-target tolerance for move PID
         //Absolute tolerance of �10cm
-        moveController.setAbsoluteTolerance(0.1);
+//        moveController.setAbsoluteTolerance(0.1);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
 
         //Ensure that the Navigator currently returns an encoder position of 0
-        navigator.resetEncoderDistance();
+//        .resetEncoderDistance();
 
         //Set the controller setpoints
         moveController.setSetpoint(distance);
         //(no rotation)
-        rotateController.setSetpoint(navigator.getHeading());
+//        rotateController.setSetpoint(navigator.getHeading());
 
         //Enable the controllers
         moveController.enable();
@@ -92,9 +95,9 @@ public class DriveStraight extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected synchronized void execute() {
-        driveTrain.arcadeDrive(moveValue, rotateValue);
+        CommandBase.driveTrain.arcadeDrive(moveValue*2, rotateValue);
 		
-	Logger.staticPrintln("Position "+navigator.getEncoderDistance()+" target "+moveController.getSetpoint());
+//	Logger.staticPrintln("Position "+navigator.getEncoderDistance()+" target "+moveController.getSetpoint());
     }
 
     // Make this return true when this Command no longer needs to run execute()
