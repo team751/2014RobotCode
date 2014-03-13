@@ -26,6 +26,8 @@ public class RaiseNommer extends CommandBase {
     // Called just before this Command runs the first time
     protected void initialize() {
 //        startDistance = RobotMap.nommerEncoder.getDistance();
+        
+        CommandBase.nommer.currentSetValue = CommandBase.nommer.getRaisedValue();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -35,26 +37,9 @@ public class RaiseNommer extends CommandBase {
             complete = true;
         } else if (RobotMap.nommerEncoder.getDistance() > CommandBase.nommer.getRaisedValue()) {
             CommandBase.nommer.setSpeed(-1*CommandBase.nommer.getNommerSpeed());
-        } else if (RobotMap.nommerEncoder.getDistance() > CommandBase.nommer.getRaisedValue()) {
-            CommandBase.nommer.setSpeed(-1*CommandBase.nommer.getNommerSpeed());
+        } else if (RobotMap.nommerEncoder.getDistance() < CommandBase.nommer.getRaisedValue()) {
+            CommandBase.nommer.setSpeed(CommandBase.nommer.getNommerSpeed());
         }
-        
-        // TODO: set correct nommer height
-//        double d = (RobotMap.nommerEncoder.getDistance()-startDistance);
-//        if (d < 0) {
-//            d = d*-1;
-//        }
-//        if (d < NommerConstants.nommerRaiseValue) {
-//            if (RobotMap.nommerEncoder.getDistance() < NommerConstants.nommerRaiseValue) {
-//                RobotMap.nommerLeftJaguar.set(0.25);
-//                RobotMap.nommerRightJaguar.set(0.25);
-//            } else {
-//                RobotMap.nommerLeftJaguar.set(-0.25);
-//                RobotMap.nommerRightJaguar.set(-0.25);
-//            }
-//        } else {
-//            complete = true;
-//        }
     }
 
     // Make this return true when this Command no longer needs to run execute()

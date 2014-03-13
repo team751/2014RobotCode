@@ -15,6 +15,9 @@ import org.team751.commands.nommer.NommerControl;
  * @author sambaumgarten
  */
 public class Nommer extends Subsystem {
+    
+    public double currentSetValue;
+    
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 
