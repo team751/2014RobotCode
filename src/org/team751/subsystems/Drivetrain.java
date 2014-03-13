@@ -117,11 +117,11 @@ public class Drivetrain extends Subsystem {
         //Invert the right motor output so that it will work
         
         if (outputs.right > 0) {
-            drive.setLeftRightMotorOutputs(outputs.left, -outputs.right*.867);
+            drive.setLeftRightMotorOutputs(outputs.left, -outputs.right*SmartDashboard.getNumber("rightConst", 1));
         } else {
             drive.setLeftRightMotorOutputs(outputs.left, -outputs.right);
         }
-        
+         
     }
 
     /**

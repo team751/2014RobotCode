@@ -30,6 +30,15 @@ public class RaiseNommer extends CommandBase {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double delta = Math.abs(RobotMap.nommerEncoder.getDistance()-CommandBase.nommer.getRaisedValue());
+        if (delta < 2) {
+            complete = true;
+        } else if (RobotMap.nommerEncoder.getDistance() > CommandBase.nommer.getRaisedValue()) {
+            CommandBase.nommer.setSpeed(-1*CommandBase.nommer.getNommerSpeed());
+        } else if (RobotMap.nommerEncoder.getDistance() > CommandBase.nommer.getRaisedValue()) {
+            CommandBase.nommer.setSpeed(-1*CommandBase.nommer.getNommerSpeed());
+        }
+        
         // TODO: set correct nommer height
 //        double d = (RobotMap.nommerEncoder.getDistance()-startDistance);
 //        if (d < 0) {

@@ -8,6 +8,7 @@ package org.team751.vision;
 
 import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.networktables2.type.NumberArray;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.tables.TableKeyNotDefinedException;
 
 /**
@@ -61,7 +62,7 @@ public class VisionNetworkTableCommunication {
      * @return
      */
     public double getDesiredDistance() {
-        return netTable.getNumber("DesiredDistance");
+        return SmartDashboard.getNumber("DesiredDistance", 90);
     }
     
     /**
@@ -109,7 +110,7 @@ public class VisionNetworkTableCommunication {
      * @return
      */
     public double getMaxAngleSpeed() {
-        return netTable.getNumber("MaxAngleSpeed");
+        return SmartDashboard.getNumber("MaxAngleSpeed", 0);
     }
     
     /**

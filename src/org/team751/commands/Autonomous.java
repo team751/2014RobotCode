@@ -11,6 +11,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.Robot;
 import org.team751.RobotMap;
 import org.team751.commands.drivetrain.DriveStraight;
+import org.team751.commands.shooter.Fire;
+import org.team751.commands.shooter.RetractShooter;
 import org.team751.utils.Logger;
 import org.team751.utils.Navigator;
 import org.team751.vision.VisionAngleCalculations;
@@ -47,6 +49,8 @@ public class Autonomous extends CommandBase {
     boolean motorsTurningLeft = false;
     boolean driving = false;
     
+    RetractShooter rs;
+    
     public Autonomous() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
@@ -72,101 +76,125 @@ public class Autonomous extends CommandBase {
         autonomousTimer.start();
         FIRED = false;
         
+        rs = new RetractShooter();
+        rs.start();
+        
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        double autonomousMode = SmartDashboard.getNumber("autonomousMode", 0);
+//        double autonomousMode = SmartDashboard.getNumber("autonomousMode", 0);
         
         SmartDashboard.putBoolean("fired", FIRED);
         
-        if (autonomousMode == 1) {
-//            gyroAutonomous();
+        if (FIRED) {
+            return;
         }
-        
+
         double distanceToGoal = VisionDistanceCalculations.getDistanceToGoal(VisionDistanceCalculations.RoboRealmVision);
         double angleToGoal = VisionAngleCalculations.getAngleToGoal(Robot.lastTarget);
         
         SmartDashboard.putNumber("distanceToGoal", distanceToGoal);
         
-        if (autonomousTimer.get() < 0.5) {
-            // Start nommer
-        } else {
-            // Disable nommer
+        if (distanceToGoal > vntc.getDesiredDistance()) {
+            CommandBase.driveTrain.arcadeDrive(0.5, 0);
+            return;
         }
         
-        // Check if distance exists and is valid
-        if (distanceToGoal > 0.0) {
-            // Calculalte the delta
-            double deltaDistance = distanceToGoal - vntc.getDesiredDistance();
-            // Check if it is at the correct distance to fire
-            if (Math.abs(deltaDistance) < vntc.getDesiredDistanceEpsilon()) {                
-                // If the robot is live, stop the drivetrain
-                if (LIVE_MODE) {
-                    CommandBase.driveTrain.tankDrive(0, 0);
-                }
-                
-                // If the autonomous timer is greater than 5 seconds (because
-                // if we are in the last 5 seconds and the target's not hot,
-                // it means we missed the first one) OR the target is hot
-                if (autonomousTimer.get() > 5.0 || Robot.lastTarget.Hot) {
-                    // Fire
-                    Logger.staticPrintln("Ready to fire");
-                    // If not at the correct distance
-                    if (!AT_FIRING_DISTANCE) {
-                        // Setup some variables in order to figure out if the
-                        // robot should shoot
-                        firingDistanceTime = autonomousTimer.get();
-                        AT_FIRING_DISTANCE = true;
-                    }
-                    
-                    // Check if we have time to fire
-                    if (autonomousTimer.get() > 2.0 && firingDistanceTime > 0 &&
-                            autonomousTimer.get() > firingDistanceTime + 1.0) {
-                        Logger.staticPrintln("Firing");
-                        // Check if we should shoot
-                        if (SHOOT_MODE) {
-                            // TODO: Add shooting code here
-                        }
-                        FIRED = true;
-                    }
-                } else {
-                    
-                }
-            // Check if we are running out of space to slowdown
-            } else if (Math.abs(deltaDistance) < vntc.getSlowDownDistance()) {
-                double scale = deltaDistance / vntc.getSlowDownDistance(); // between -1 and 1
-                double range = vntc.getMaxForwardSpeed() - vntc.getMinForwardSpeed();
-                double desiredSpeed = (minSpeed + range) * scale;
-                if (LIVE_MODE) {
-                    // TODO: add code to drive at a specific speed
-                    SmartDashboard.putNumber("desiredSpeed", desiredSpeed);
-                }
-            // Calculate correct angle
-            } else {
-                // Calculate the angle to drive at
-                double sign = deltaDistance > 0 ? 1 : -1;
-                double angleSign = 0;
-                if (Math.abs(angleToGoal) > maxAngleToGoal) {
-                    // Turn towards the goal so it stays in view
-                    angleSign = angleToGoal > 0 ? 1 : -1;
-                }
-                SmartDashboard.putNumber("angleToGoal", angleToGoal);
-                SmartDashboard.putNumber("angleSign", angleSign);
-                
-                if (LIVE_MODE) {
-                    if (STRAFE_MODE) {
-                        // TODO: add correct driving code
-                        //chassisDrive.tankDrive(sign * maxSpeed, sign * maxSpeed);
-//                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
-                    } else {
-                        // Add correct driving code
-//                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
-                    }
-                }
-                Logger.staticPrintln("Driving towards: " + sign * maxForwardSpeed + " Angle: " + angleSign * maxAngleSpeed);
+        if (angleToGoal < vntc.getMaxAngle()) {
+            CommandBase.driveTrain.arcadeDrive(0, 0.5);
+            return;
+        }
+        
+        if (Robot.lastTarget.Hot || autonomousTimer.get() > 5.0) {
+            // Shoot
+            if (!rs.isRunning() || autonomousTimer.get() > 8.0) {
+                Fire fire = new Fire();
+                fire.start();
+                FIRED = true;
             }
         }
+        
+        
+        
+        
+        
+//        
+//        
+//        
+//        
+//        // Check if distance exists and is valid
+//        if (distanceToGoal > 0.0) {
+//            // Calculalte the delta
+//            double deltaDistance = distanceToGoal - vntc.getDesiredDistance();
+//            // Check if it is at the correct distance to fire
+//            if (Math.abs(deltaDistance) < vntc.getDesiredDistanceEpsilon()) {                
+//                // If the robot is live, stop the drivetrain
+//                if (LIVE_MODE) {
+//                    CommandBase.driveTrain.tankDrive(0, 0);
+//                }
+//                
+//                // If the autonomous timer is greater than 5 seconds (because
+//                // if we are in the last 5 seconds and the target's not hot,
+//                // it means we missed the first one) OR the target is hot
+//                if (autonomousTimer.get() > 5.0 || Robot.lastTarget.Hot) {
+//                    // Fire
+//                    Logger.staticPrintln("Ready to fire");
+//                    // If not at the correct distance
+//                    if (!AT_FIRING_DISTANCE) {
+//                        // Setup some variables in order to figure out if the
+//                        // robot should shoot
+//                        firingDistanceTime = autonomousTimer.get();
+//                        AT_FIRING_DISTANCE = true;
+//                    }
+//                    
+//                    // Check if we have time to fire
+//                    if (autonomousTimer.get() > 2.0 && firingDistanceTime > 0 &&
+//                            autonomousTimer.get() > firingDistanceTime + 1.0) {
+//                        Logger.staticPrintln("Firing");
+//                        // Check if we should shoot
+//                        if (SHOOT_MODE) {
+//                            // TODO: Add shooting code here
+//                        }
+//                        FIRED = true;
+//                    }
+//                } else {
+//                    
+//                }
+//            // Check if we are running out of space to slowdown
+//            } else if (Math.abs(deltaDistance) < vntc.getSlowDownDistance()) {
+//                double scale = deltaDistance / vntc.getSlowDownDistance(); // between -1 and 1
+//                double range = vntc.getMaxForwardSpeed() - vntc.getMinForwardSpeed();
+//                double desiredSpeed = (minSpeed + range) * scale;
+//                if (LIVE_MODE) {
+//                    // TODO: add code to drive at a specific speed
+//                    SmartDashboard.putNumber("desiredSpeed", desiredSpeed);
+//                }
+//            // Calculate correct angle
+//            } else {
+//                // Calculate the angle to drive at
+//                double sign = deltaDistance > 0 ? 1 : -1;
+//                double angleSign = 0;
+//                if (Math.abs(angleToGoal) > maxAngleToGoal) {
+//                    // Turn towards the goal so it stays in view
+//                    angleSign = angleToGoal > 0 ? 1 : -1;
+//                }
+//                SmartDashboard.putNumber("angleToGoal", angleToGoal);
+//                SmartDashboard.putNumber("angleSign", angleSign);
+//                
+//                if (LIVE_MODE) {
+//                    if (STRAFE_MODE) {
+//                        // TODO: add correct driving code
+//                        //chassisDrive.tankDrive(sign * maxSpeed, sign * maxSpeed);
+////                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
+//                    } else {
+//                        // Add correct driving code
+////                        CommandBase.driveTrain.cheesyDrive(angleSign, 1.0, false);
+//                    }
+//                }
+//                Logger.staticPrintln("Driving towards: " + sign * maxForwardSpeed + " Angle: " + angleSign * maxAngleSpeed);
+//            }
+//        }
     }
     
     public void gyroAutonomous() {

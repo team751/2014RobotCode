@@ -4,6 +4,7 @@ package org.team751;
 import org.team751.commands.Autonomous;
 import org.team751.commands.drivetrain.DriveStraight;
 import org.team751.commands.drivetrain.HoldAngle;
+import org.team751.commands.nommer.LowerNommer;
 import org.team751.commands.shooter.EngageMotor;
 import org.team751.commands.shooter.Fire;
 import org.team751.commands.shooter.PullbackShooterMotor;
@@ -28,8 +29,8 @@ public class OI {
         driverJoystick.baseLeftForward.whileHeld(new HoldAngle(10));
         // Top front and top back are used by Cheesy Drive
         
-        operatorJoystick.trigger.whenPressed(new TestPullback());
-        operatorJoystick.topBack.whenPressed(new PullbackShooterMotor());
+        operatorJoystick.trigger.whenPressed(new LowerNommer());
+        operatorJoystick.topBack.whenPressed(new LowerNommer());
         
         
 //        operatorJoystick.topBack.whenPressed(new RetractShooter());

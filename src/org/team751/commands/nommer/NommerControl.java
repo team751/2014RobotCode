@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package org.team751.commands.calibration;
+package org.team751.commands.nommer;
 
 import org.team751.RobotMap;
 import org.team751.commands.CommandBase;
@@ -12,25 +12,32 @@ import org.team751.commands.CommandBase;
  *
  * @author sambaumgarten
  */
-public class CalibrateNommer extends CommandBase {
+public class NommerControl extends CommandBase {
     
-    public CalibrateNommer() {
+    public NommerControl() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-//        RobotMap.nommerEncoder.reset();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        double delta = RobotMap.nommerEncoder.getDistance()-(CommandBase.oi.operatorJoystick.getY() * CommandBase.nommer.getRaisedValue());
+        if (delta > 2) {
+            CommandBase.nommer.setSpeed(CommandBase.nommer.getNommerSpeed());
+        }
+        
+        if (delta < -2) {
+            CommandBase.nommer.setSpeed(-1*CommandBase.nommer.getNommerSpeed());
+        }
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

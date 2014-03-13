@@ -5,6 +5,7 @@
  */
 package org.team751.commands.nommer;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.RobotMap;
 import org.team751.commands.CommandBase;
 import org.team751.subsystems.Shooter;
@@ -25,11 +26,16 @@ public class LowerNommer extends CommandBase {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+        RobotMap.nommerEncoder.setDistancePerPulse(.01);
+        RobotMap.nommerEncoder.start();
+        Logger.staticPrintln("START");
 //        startDistance = RobotMap.nommerEncoder.getDistance();
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        Logger.staticPrintln("D: " + RobotMap.nommerEncoder.getDistance());
+        SmartDashboard.putNumber("MAGICALNOMMER", RobotMap.nommerEncoder.getDistance());
         double delta = Math.abs(RobotMap.nommerEncoder.getDistance()-CommandBase.nommer.getLoweredValue());
         if (delta < 2) {
             complete = true;

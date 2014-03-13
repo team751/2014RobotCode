@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.commands.Autonomous;
 import org.team751.commands.CommandBase;
+import org.team751.commands.calibration.CalibrateNommer;
 import org.team751.commands.calibration.CalibrateShooter;
 import org.team751.utils.Diagnostic;
 import org.team751.utils.Logger;
@@ -49,6 +50,7 @@ public class Robot extends IterativeRobot {
         SmartDashboard.putNumber("autonomousMode", 0);
         
         SmartDashboard.putData("Calibrate Shooter", new CalibrateShooter());
+        SmartDashboard.putData("Calibrate Nommer", new CalibrateNommer());
 
         // Start compressor
 //        RobotMap.compressor.setRelayValue(Relay.Value.kForward);

@@ -8,6 +8,7 @@ package org.team751.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.team751.RobotMap;
+import org.team751.commands.nommer.NommerControl;
 
 /**
  *
@@ -19,15 +20,15 @@ public class Nommer extends Subsystem {
 
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.
-        //setDefaultCommand(new MySpecialCommand());
+        setDefaultCommand(new NommerControl());
     }
     
     public double getLoweredValue() {
-        return SmartDashboard.getNumber("nommerLoweredValue");
+        return SmartDashboard.getNumber("nommerLoweredValue", 0);
     }
     
     public double getRaisedValue() {
-        return SmartDashboard.getNumber("nommerRaisedValue");
+        return SmartDashboard.getNumber("nommerRaisedValue", 100);
     }
     
     public double getGameStartValue() {
@@ -35,7 +36,7 @@ public class Nommer extends Subsystem {
     }
     
     public double getNommerSpeed() {
-        return SmartDashboard.getNumber("nommerSpeed");
+        return SmartDashboard.getNumber("nommerSpeed", 0.1);
     }
     
     public void setSpeed(double speed) {

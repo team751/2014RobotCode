@@ -22,7 +22,7 @@ public class RobotMap {
     /**
      * The PWM connector the left drivetrain motors are attached to
      */
-    public static final int leftDrivePWM = 6;
+    public static final int leftDrivePWM = 1;
     /**
      * The PWM connector the right drivetrain motors are attached to
      */
@@ -64,19 +64,19 @@ public class RobotMap {
     /**
      * The digital input for the shooter pullback encoder A is attached to
      */
-    public static final int shooterPullbackEncoderChannelA = 5;
+    public static final int shooterPullbackEncoderChannelA = 7;
     /**
      * The digital input for the shooter pullback encoder A is attached to
      */
-    public static final int shooterPullbackEncoderChannelB = 6;
+    public static final int shooterPullbackEncoderChannelB = 8;
     /**
      * The digital input for the shooter pullback encoder A is attached to
      */
-    public static final int nommerEncoderChannelA = 7;
+    public static final int nommerEncoderChannelA = 5;
     /**
      * The digital input for the shooter pullback encoder A is attached to
      */
-    public static final int nommerEncoderChannelB = 8;
+    public static final int nommerEncoderChannelB = 6;
     
     // LIMIT SWITCHES
     public static final int moverEngagedLimitSwitchChannel = 9;
